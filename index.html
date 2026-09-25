@@ -14,162 +14,288 @@
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f1115;
-    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #080a0f;
+    color: #ffffff;
 }
 
 header {
-    text-align: center;
-    padding: 25px;
-    background: #181b21;
-    border-bottom: 1px solid #30343c;
+    padding: 22px;
+    border-bottom: 1px solid #20242d;
+    background: #0d1017;
 }
 
-h1 {
+header h1 {
     margin: 0;
-    font-size: 30px;
+    font-size: 25px;
 }
 
-#status {
-    margin-top: 8px;
-    color: #9da6b3;
+header p {
+    margin: 6px 0 0;
+    color: #858b98;
+    font-size: 14px;
 }
 
-main {
-    max-width: 950px;
+.container {
+    max-width: 1100px;
     margin: auto;
     padding: 25px;
 }
 
-.card {
-    background: #181b21;
-    border: 1px solid #30343c;
-    border-radius: 18px;
+.connection {
+    background: #11151d;
+    border: 1px solid #242a35;
+    border-radius: 16px;
     padding: 20px;
     margin-bottom: 20px;
 }
 
-.card h2 {
+.connection h2 {
     margin-top: 0;
+    font-size: 18px;
+}
+
+.connection-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+input {
+    background: #090c11;
+    border: 1px solid #303642;
+    color: white;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 15px;
+    flex: 1;
+    min-width: 220px;
 }
 
 button {
     border: none;
-    border-radius: 12px;
-    padding: 13px 18px;
-    margin: 4px;
-    background: #2b313b;
+    border-radius: 10px;
+    padding: 12px 17px;
+    background: #202631;
     color: white;
-    font-size: 16px;
     cursor: pointer;
+    font-size: 14px;
+    transition: 0.15s;
 }
 
 button:hover {
-    background: #39414d;
+    background: #2d3543;
 }
 
-.primary {
-    background: #3478f6;
+button.primary {
+    background: #ffffff;
+    color: #000000;
 }
 
-.primary:hover {
-    background: #2563d8;
+button.primary:hover {
+    background: #dddddd;
 }
 
-.hardware-grid {
+.status {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #858b98;
+}
+
+.status.connected {
+    color: #55e39a;
+}
+
+.grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 18px;
 }
 
-.hardware-option {
-    background: #222731;
-    border: 1px solid #353b46;
-    border-radius: 14px;
-    padding: 15px;
-    cursor: pointer;
+.card {
+    background: #11151d;
+    border: 1px solid #242a35;
+    border-radius: 16px;
+    padding: 20px;
 }
 
-.hardware-option:hover {
-    background: #292f39;
+.card h2 {
+    margin: 0 0 5px;
+    font-size: 19px;
 }
 
-.hardware-option input {
-    transform: scale(1.3);
-    margin-right: 8px;
-}
-
-.hardware-option label {
-    cursor: pointer;
-}
-
-.hidden {
-    display: none;
-}
-
-input[type="range"] {
-    width: 100%;
-}
-
-.value {
-    margin-top: 8px;
-    color: #aeb7c4;
-}
-
-#oledPreview {
-    width: 256px;
-    height: 128px;
-    background: black;
-    border: 3px solid #555;
-    border-radius: 8px;
-    margin: 15px auto;
-    display: block;
-    image-rendering: pixelated;
-}
-
-.joystick-area {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-#joystick {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    background: #252b34;
-    border: 4px solid #414955;
-    position: relative;
-    touch-action: none;
-}
-
-#stick {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: #4d89ff;
-    position: absolute;
-    left: 75px;
-    top: 75px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-}
-
-.direction-label {
-    text-align: center;
-    color: #9da6b3;
+.card-description {
+    color: #858b98;
+    font-size: 13px;
+    margin-bottom: 18px;
 }
 
 .controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 9px;
 }
 
-hr {
-    border: 0;
-    border-top: 1px solid #30343c;
-    margin: 20px 0;
+.slider-row {
+    margin-top: 18px;
+}
+
+.slider-row label {
+    display: block;
+    font-size: 13px;
+    color: #9aa1ad;
+    margin-bottom: 8px;
+}
+
+input[type="range"] {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+}
+
+.value {
+    float: right;
+    color: white;
+}
+
+.eye-area {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+#eyeCanvas {
+    width: 256px;
+    height: 128px;
+    background: #000;
+    border-radius: 12px;
+    border: 1px solid #2c323d;
+}
+
+.joystick-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.joystick {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: #080b10;
+    border: 2px solid #303744;
+    position: relative;
+    touch-action: none;
+}
+
+.stick {
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #ffffff;
+    left: 49px;
+    top: 49px;
+    cursor: grab;
+}
+
+.auto-row {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.switch {
+    width: 48px;
+    height: 26px;
+    background: #303744;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.switch.active {
+    background: #ffffff;
+}
+
+.switch::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    background: #11151d;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    transition: 0.15s;
+}
+
+.switch.active::after {
+    left: 24px;
+}
+
+.colour-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 7px;
+}
+
+.colour {
+    height: 42px;
+    padding: 0;
+}
+
+.colour.white {
+    background: white;
+    border: 1px solid #777;
+}
+
+.colour.red {
+    background: #ff3333;
+}
+
+.colour.green {
+    background: #36e27c;
+}
+
+.colour.blue {
+    background: #408cff;
+}
+
+.colour.purple {
+    background: #c85cff;
+}
+
+.disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+footer {
+    text-align: center;
+    color: #555d6b;
+    font-size: 12px;
+    padding: 30px;
+}
+
+@media (max-width: 600px) {
+
+    .container {
+        padding: 15px;
+    }
+
+    .connection-row {
+        flex-direction: column;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    .connection-row button {
+        width: 100%;
+    }
 }
 
 </style>
@@ -178,778 +304,987 @@ hr {
 <body>
 
 <header>
-
-<h1>🤖 AI Robot Control</h1>
-
-<div id="status">
-    Not connected
-</div>
-
+    <h1>AI Robot Control</h1>
+    <p>Wireless robot control centre</p>
 </header>
 
-<main>
+<div class="container">
 
-<!-- CONNECTION -->
+    <!-- CONNECTION -->
 
-<div class="card">
+    <div class="connection">
 
-<h2>🔌 Robot Connection</h2>
+        <h2>Robot Connection</h2>
 
-<button id="connectButton" class="primary">
-    Connect Robot
-</button>
+        <div class="connection-row">
+
+            <input
+                id="ipAddress"
+                type="text"
+                value="192.168.0.243"
+                placeholder="Robot IP address"
+            >
+
+            <button
+                class="primary"
+                id="wifiButton"
+            >
+                Connect Wi-Fi
+            </button>
+
+            <button id="usbButton">
+                Connect USB
+            </button>
+
+        </div>
+
+        <div
+            id="status"
+            class="status"
+        >
+            Not connected
+        </div>
+
+    </div>
+
+
+    <div class="grid">
+
+        <!-- OLED -->
+
+        <div class="card">
+
+            <h2>OLED Eyes</h2>
+
+            <div class="card-description">
+                Control the robot's eyes.
+            </div>
+
+            <div class="controls">
+
+                <button id="oledOn">
+                    OLED ON
+                </button>
+
+                <button id="oledOff">
+                    OLED OFF
+                </button>
+
+            </div>
+
+            <div class="slider-row">
+
+                <label>
+                    OLED Brightness
+
+                    <span
+                        class="value"
+                        id="oledBrightnessValue"
+                    >
+                        255
+                    </span>
+
+                </label>
+
+                <input
+                    id="oledBrightness"
+                    type="range"
+                    min="0"
+                    max="255"
+                    value="255"
+                >
+
+            </div>
+
+            <div class="eye-area">
+
+                <canvas
+                    id="eyeCanvas"
+                    width="256"
+                    height="128"
+                ></canvas>
+
+            </div>
+
+            <div class="joystick-container">
+
+                <div
+                    class="joystick"
+                    id="joystick"
+                >
+
+                    <div
+                        class="stick"
+                        id="stick"
+                    ></div>
+
+                </div>
+
+            </div>
+
+            <div class="auto-row">
+
+                <span>
+                    Automatic Looking
+                </span>
+
+                <div
+                    class="switch active"
+                    id="autoSwitch"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RGB -->
+
+        <div class="card">
+
+            <h2>RGB LED</h2>
+
+            <div class="card-description">
+                Control the built-in RGB LED.
+            </div>
+
+            <div class="controls">
+
+                <button id="rgbOn">
+                    ON
+                </button>
+
+                <button id="rgbOff">
+                    OFF
+                </button>
+
+                <button id="rainbow">
+                    Rainbow
+                </button>
+
+            </div>
+
+            <div class="slider-row">
+
+                <label>
+
+                    Brightness
+
+                    <span
+                        class="value"
+                        id="rgbBrightnessValue"
+                    >
+                        80
+                    </span>
+
+                </label>
+
+                <input
+                    id="rgbBrightness"
+                    type="range"
+                    min="0"
+                    max="255"
+                    value="80"
+                >
+
+            </div>
+
+            <div class="slider-row">
+
+                <label>
+                    Colour
+                </label>
+
+                <div class="colour-grid">
+
+                    <button
+                        class="colour white"
+                        data-colour="0"
+                    ></button>
+
+                    <button
+                        class="colour red"
+                        data-colour="1"
+                    ></button>
+
+                    <button
+                        class="colour green"
+                        data-colour="2"
+                    ></button>
+
+                    <button
+                        class="colour blue"
+                        data-colour="3"
+                    ></button>
+
+                    <button
+                        class="colour purple"
+                        data-colour="4"
+                    ></button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 3W LED -->
+
+        <div class="card">
+
+            <h2>3W LED</h2>
+
+            <div class="card-description">
+                Control the robot's main LED.
+            </div>
+
+            <div class="controls">
+
+                <button id="ledOn">
+                    ON
+                </button>
+
+                <button id="ledOff">
+                    OFF
+                </button>
+
+            </div>
+
+            <div class="slider-row">
+
+                <label>
+
+                    Brightness
+
+                    <span
+                        class="value"
+                        id="ledBrightnessValue"
+                    >
+                        255
+                    </span>
+
+                </label>
+
+                <input
+                    id="ledBrightness"
+                    type="range"
+                    min="0"
+                    max="255"
+                    value="255"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- HARDWARE -->
+
+        <div class="card">
+
+            <h2>Hardware</h2>
+
+            <div class="card-description">
+                Robot hardware status.
+            </div>
+
+            <div class="controls">
+
+                <button>
+                    RGB LED
+                </button>
+
+                <button>
+                    3W LED
+                </button>
+
+                <button>
+                    OLED
+                </button>
+
+                <button>
+                    Joystick
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
-
-<!-- HARDWARE -->
-
-<div class="card">
-
-<h2>⚙️ Hardware Setup</h2>
-
-<p>
-Select the hardware currently connected to your robot.
-</p>
-
-<div class="hardware-grid">
-
-<div class="hardware-option">
-<label>
-<input type="checkbox" id="hardwareRGB">
-🌈 RGB LED
-</label>
-</div>
-
-<div class="hardware-option">
-<label>
-<input type="checkbox" id="hardwareLED">
-💡 3W LED
-</label>
-</div>
-
-<div class="hardware-option">
-<label>
-<input type="checkbox" id="hardwareJoystick">
-🕹️ Physical Joystick
-</label>
-</div>
-
-<div class="hardware-option">
-<label>
-<input type="checkbox" id="hardwareOLED">
-🖥️ OLED Display
-</label>
-</div>
-
-<div class="hardware-option">
-<label>
-<input type="checkbox" id="hardwareServo">
-🦾 Servos
-</label>
-</div>
-
-<div class="hardware-option">
-<label>
-<input type="checkbox" id="hardwareCamera">
-📷 Camera
-</label>
-</div>
-
-<div class="hardware-option">
-<label>
-<input type="checkbox" id="hardwareDistance">
-📡 Distance Sensor
-</label>
-</div>
-
-</div>
-
-</div>
-
-
-<!-- RGB -->
-
-<div id="rgbCard" class="card hidden">
-
-<h2>🌈 RGB LED</h2>
-
-<div class="controls">
-
-<button onclick="sendCommand('COLOUR:0')">
-🔴 Red
-</button>
-
-<button onclick="sendCommand('COLOUR:1')">
-🟢 Green
-</button>
-
-<button onclick="sendCommand('COLOUR:2')">
-🔵 Blue
-</button>
-
-<button onclick="sendCommand('COLOUR:3')">
-🟣 Purple
-</button>
-
-<button onclick="sendCommand('COLOUR:4')">
-⚪ White
-</button>
-
-<button onclick="sendCommand('RAINBOW')">
-🌈 Rainbow
-</button>
-
-</div>
-
-<br>
-
-<label>
-Brightness
-</label>
-
-<input
-type="range"
-id="rgbBrightness"
-min="0"
-max="255"
-value="128">
-
-<div class="value">
-Brightness:
-<span id="rgbBrightnessValue">128</span>
-</div>
-
-</div>
-
-
-<!-- 3W LED -->
-
-<div id="ledCard" class="card hidden">
-
-<h2>💡 3W LED</h2>
-
-<button onclick="sendCommand('ON')">
-💡 Turn ON
-</button>
-
-<button onclick="sendCommand('OFF')">
-🌑 Turn OFF
-</button>
-
-<br><br>
-
-<label>
-Brightness
-</label>
-
-<input
-type="range"
-id="ledBrightness"
-min="0"
-max="255"
-value="255">
-
-<div class="value">
-Brightness:
-<span id="ledBrightnessValue">255</span>
-</div>
-
-</div>
-
-
-<!-- JOYSTICK -->
-
-<div id="joystickCard" class="card hidden">
-
-<h2>🕹️ Physical Joystick</h2>
-
-<p>
-The physical joystick is connected to the robot.
-</p>
-
-</div>
-
-
-<!-- OLED -->
-
-<div id="oledCard" class="card hidden">
-
-<h2>🖥️ OLED Robot Face</h2>
-
-<p>
-Preview of the robot's 128×64 OLED:
-</p>
-
-<canvas
-id="oledPreview"
-width="128"
-height="64">
-</canvas>
-
-<hr>
-
-<h3>⏻ Display</h3>
-
-<button onclick="sendCommand('OLED:ON')">
-🟢 OLED ON
-</button>
-
-<button onclick="sendCommand('OLED:OFF')">
-🔴 OLED OFF
-</button>
-
-<br><br>
-
-<label>
-OLED Brightness
-</label>
-
-<input
-type="range"
-id="oledBrightness"
-min="0"
-max="255"
-value="255">
-
-<div class="value">
-Brightness:
-<span id="oledBrightnessValue">255</span>
-</div>
-
-
-<hr>
-
-<h3>🕹️ Virtual Joystick</h3>
-
-<p>
-Move this joystick to control the robot's eyes.
-</p>
-
-<div class="joystick-area">
-
-<div id="joystick">
-
-<div id="stick"></div>
-
-</div>
-
-</div>
-
-<div class="direction-label">
-
-Direction:
-<span id="direction">
-Centre
-</span>
-
-</div>
-
-
-<hr>
-
-<h3>🤖 Automatic Looking</h3>
-
-<button id="autoLookButton" onclick="toggleAutoLook()">
-🤖 Automatic Looking: ON
-</button>
-
-<p>
-When enabled, the robot will look around by itself.
-</p>
-
-</div>
-
-
-<!-- SERVOS -->
-
-<div id="servoCard" class="card hidden">
-
-<h2>🦾 Servos</h2>
-
-<p>
-Servo controls will be added here.
-</p>
-
-</div>
-
-
-<!-- CAMERA -->
-
-<div id="cameraCard" class="card hidden">
-
-<h2>📷 Camera</h2>
-
-<p>
-Camera controls will be added here.
-</p>
-
-</div>
-
-
-<!-- DISTANCE -->
-
-<div id="distanceCard" class="card hidden">
-
-<h2>📡 Distance Sensor</h2>
-
-<p>
-Distance sensor controls will be added here.
-</p>
-
-</div>
-
-</main>
+<footer>
+    AI Robot Control • WebSocket + USB
+</footer>
 
 
 <script>
 
-let port = null;
-let writer = null;
+// =====================================================
+// CONNECTION
+// =====================================================
 
-let autoLook = true;
+let socket = null;
+let serialPort = null;
+let serialWriter = null;
+
+const statusElement =
+    document.getElementById("status");
 
 
-// --------------------------------------------------
-// CONNECT
-// --------------------------------------------------
+// =====================================================
+// STATUS
+// =====================================================
 
-document
-.getElementById("connectButton")
-.addEventListener("click", async () => {
+function setStatus(
+    message,
+    connected = false
+) {
 
-try {
+    statusElement.textContent =
+        message;
 
-if (!("serial" in navigator)) {
-
-document.getElementById("status").textContent =
-"Web Serial is not supported.";
-
-return;
-
+    statusElement.classList.toggle(
+        "connected",
+        connected
+    );
 }
 
-port = await navigator.serial.requestPort();
 
-await port.open({
-baudRate: 115200
-});
-
-writer = port.writable.getWriter();
-
-document.getElementById("status").textContent =
-"🟢 Robot connected";
-
-document.getElementById("connectButton").textContent =
-"✅ Connected";
-
-}
-catch(error) {
-
-console.error(error);
-
-document.getElementById("status").textContent =
-"Connection failed.";
-
-}
-
-});
-
-
-// --------------------------------------------------
+// =====================================================
 // SEND COMMAND
-// --------------------------------------------------
+// =====================================================
 
-async function sendCommand(command) {
+async function sendCommand(
+    command
+) {
 
-if (!writer) {
+    // Wi-Fi
+    if (
+        socket &&
+        socket.readyState === WebSocket.OPEN
+    ) {
 
-document.getElementById("status").textContent =
-"Connect the robot first.";
+        socket.send(command);
 
-return;
+        console.log(
+            "Wi-Fi →",
+            command
+        );
 
+        return;
+    }
+
+    // USB
+    if (
+        serialWriter
+    ) {
+
+        const data =
+            command + "\n";
+
+        await serialWriter.write(
+            new TextEncoder().encode(data)
+        );
+
+        console.log(
+            "USB →",
+            command
+        );
+
+        return;
+    }
+
+    setStatus(
+        "Connect to the robot first"
+    );
 }
 
-try {
 
-const data =
-new TextEncoder().encode(command + "\n");
-
-await writer.write(data);
-
-console.log("Sent:", command);
-
-}
-catch(error) {
-
-console.error(error);
-
-}
-
-}
-
-
-// --------------------------------------------------
-// HARDWARE CHECKBOXES
-// --------------------------------------------------
-
-const hardwareMap = {
-
-hardwareRGB: "rgbCard",
-
-hardwareLED: "ledCard",
-
-hardwareJoystick: "joystickCard",
-
-hardwareOLED: "oledCard",
-
-hardwareServo: "servoCard",
-
-hardwareCamera: "cameraCard",
-
-hardwareDistance: "distanceCard"
-
-};
-
-
-Object.keys(hardwareMap).forEach(id => {
+// =====================================================
+// WIFI CONNECTION
+// =====================================================
 
 document
-.getElementById(id)
-.addEventListener("change", function() {
+    .getElementById("wifiButton")
+    .addEventListener(
+        "click",
+        () => {
 
-const card =
-document.getElementById(hardwareMap[id]);
+            const ip =
+                document
+                    .getElementById("ipAddress")
+                    .value
+                    .trim();
 
-card.classList.toggle(
-"hidden",
-!this.checked
-);
+            if (!ip) {
 
-});
+                setStatus(
+                    "Enter the robot IP address"
+                );
 
-});
+                return;
+            }
+
+            if (socket) {
+
+                socket.close();
+            }
+
+            setStatus(
+                "Connecting to robot..."
+            );
+
+            socket =
+                new WebSocket(
+                    "ws://" + ip + ":81"
+                );
+
+            socket.onopen =
+                () => {
+
+                    setStatus(
+                        "Connected via Wi-Fi",
+                        true
+                    );
+
+                    console.log(
+                        "Wi-Fi connected"
+                    );
+                };
+
+            socket.onmessage =
+                event => {
+
+                    console.log(
+                        "Robot:",
+                        event.data
+                    );
+                };
+
+            socket.onerror =
+                error => {
+
+                    console.error(
+                        error
+                    );
+
+                    setStatus(
+                        "Wi-Fi connection failed"
+                    );
+                };
+
+            socket.onclose =
+                () => {
+
+                    if (
+                        statusElement
+                            .textContent
+                            .includes(
+                                "Wi-Fi"
+                            )
+                    ) {
+
+                        setStatus(
+                            "Wi-Fi disconnected"
+                        );
+                    }
+                };
+
+        }
+    );
 
 
-// --------------------------------------------------
-// RGB BRIGHTNESS
-// --------------------------------------------------
+// =====================================================
+// USB CONNECTION
+// =====================================================
 
-const rgbBrightness =
-document.getElementById("rgbBrightness");
+document
+    .getElementById("usbButton")
+    .addEventListener(
+        "click",
+        async () => {
 
-const rgbBrightnessValue =
-document.getElementById("rgbBrightnessValue");
+            if (
+                !("serial" in navigator)
+            ) {
 
-rgbBrightness.addEventListener("input", () => {
+                setStatus(
+                    "Web Serial is not supported by this browser"
+                );
 
-rgbBrightnessValue.textContent =
-rgbBrightness.value;
+                return;
+            }
 
-sendCommand(
-"BRIGHTNESS:" + rgbBrightness.value
-);
+            try {
 
-});
+                serialPort =
+                    await navigator
+                        .serial
+                        .requestPort();
+
+                await serialPort.open({
+                    baudRate: 115200
+                });
+
+                serialWriter =
+                    serialPort.writable.getWriter();
+
+                setStatus(
+                    "Connected via USB",
+                    true
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    error
+                );
+
+                setStatus(
+                    "USB connection failed"
+                );
+            }
+
+        }
+    );
 
 
-// --------------------------------------------------
-// 3W LED BRIGHTNESS
-// --------------------------------------------------
+// =====================================================
+// OLED
+// =====================================================
 
-const ledBrightness =
-document.getElementById("ledBrightness");
+document
+    .getElementById("oledOn")
+    .addEventListener(
+        "click",
+        () => sendCommand(
+            "OLED:ON"
+        )
+    );
 
-const ledBrightnessValue =
-document.getElementById("ledBrightnessValue");
-
-ledBrightness.addEventListener("input", () => {
-
-ledBrightnessValue.textContent =
-ledBrightness.value;
-
-sendCommand(
-"LED_BRIGHTNESS:" + ledBrightness.value
-);
-
-});
+document
+    .getElementById("oledOff")
+    .addEventListener(
+        "click",
+        () => sendCommand(
+            "OLED:OFF"
+        )
+    );
 
 
-// --------------------------------------------------
+// =====================================================
 // OLED BRIGHTNESS
-// --------------------------------------------------
+// =====================================================
 
 const oledBrightness =
-document.getElementById("oledBrightness");
+    document.getElementById(
+        "oledBrightness"
+    );
 
 const oledBrightnessValue =
-document.getElementById("oledBrightnessValue");
+    document.getElementById(
+        "oledBrightnessValue"
+    );
 
-oledBrightness.addEventListener("input", () => {
+oledBrightness.addEventListener(
+    "input",
+    () => {
 
-oledBrightnessValue.textContent =
-oledBrightness.value;
+        const value =
+            oledBrightness.value;
 
-sendCommand(
-"OLED_BRIGHTNESS:" +
-oledBrightness.value
+        oledBrightnessValue.textContent =
+            value;
+
+        sendCommand(
+            "OLED_BRIGHTNESS:" + value
+        );
+    }
 );
 
-});
+
+// =====================================================
+// RGB
+// =====================================================
+
+document
+    .getElementById("rgbOn")
+    .addEventListener(
+        "click",
+        () => sendCommand(
+            "RGB_ON"
+        )
+    );
+
+document
+    .getElementById("rgbOff")
+    .addEventListener(
+        "click",
+        () => sendCommand(
+            "RGB_OFF"
+        )
+    );
+
+document
+    .getElementById("rainbow")
+    .addEventListener(
+        "click",
+        () => sendCommand(
+            "RAINBOW"
+        )
+    );
 
 
-// --------------------------------------------------
-// AUTOMATIC LOOKING
-// --------------------------------------------------
+// =====================================================
+// RGB BRIGHTNESS
+// =====================================================
 
-function toggleAutoLook() {
+const rgbBrightness =
+    document.getElementById(
+        "rgbBrightness"
+    );
 
-autoLook = !autoLook;
+const rgbBrightnessValue =
+    document.getElementById(
+        "rgbBrightnessValue"
+    );
 
-const button =
-document.getElementById("autoLookButton");
+rgbBrightness.addEventListener(
+    "input",
+    () => {
 
-if (autoLook) {
+        const value =
+            rgbBrightness.value;
 
-button.textContent =
-"🤖 Automatic Looking: ON";
+        rgbBrightnessValue.textContent =
+            value;
 
-sendCommand("EYES:AUTO");
-
-}
-else {
-
-button.textContent =
-"🕹️ Automatic Looking: OFF";
-
-sendCommand("EYES:MANUAL");
-
-}
-
-}
+        sendCommand(
+            "BRIGHTNESS:" + value
+        );
+    }
+);
 
 
-// --------------------------------------------------
-// OLED PREVIEW
-// --------------------------------------------------
+// =====================================================
+// RGB COLOURS
+// =====================================================
+
+document
+    .querySelectorAll(
+        "[data-colour]"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    sendCommand(
+                        "COLOUR:" +
+                        button.dataset.colour
+                    );
+                }
+            );
+
+        }
+    );
+
+
+// =====================================================
+// 3W LED
+// =====================================================
+
+document
+    .getElementById("ledOn")
+    .addEventListener(
+        "click",
+        () => sendCommand(
+            "ON"
+        )
+    );
+
+document
+    .getElementById("ledOff")
+    .addEventListener(
+        "click",
+        () => sendCommand(
+            "OFF"
+        )
+    );
+
+
+// =====================================================
+// 3W LED BRIGHTNESS
+// =====================================================
+
+const ledBrightness =
+    document.getElementById(
+        "ledBrightness"
+    );
+
+const ledBrightnessValue =
+    document.getElementById(
+        "ledBrightnessValue"
+    );
+
+ledBrightness.addEventListener(
+    "input",
+    () => {
+
+        const value =
+            ledBrightness.value;
+
+        ledBrightnessValue.textContent =
+            value;
+
+        sendCommand(
+            "LED_BRIGHTNESS:" + value
+        );
+    }
+);
+
+
+// =====================================================
+// EYE CANVAS
+// =====================================================
 
 const canvas =
-document.getElementById("oledPreview");
+    document.getElementById(
+        "eyeCanvas"
+    );
 
 const ctx =
-canvas.getContext("2d");
+    canvas.getContext("2d");
 
 let previewX = 0;
 let previewY = 0;
 
 function drawPreview() {
 
-ctx.fillStyle = "black";
-ctx.fillRect(0, 0, 128, 64);
+    ctx.fillStyle =
+        "#000000";
 
-ctx.fillStyle = "white";
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
-ctx.beginPath();
+    ctx.fillStyle =
+        "#ffffff";
 
-ctx.roundRect(
-16 + previewX,
-13 + previewY,
-40,
-38,
-8
-);
+    ctx.beginPath();
 
-ctx.fill();
+    ctx.roundRect(
+        36 + previewX,
+        30 + previewY,
+        70,
+        68,
+        18
+    );
 
-ctx.beginPath();
+    ctx.fill();
 
-ctx.roundRect(
-72 + previewX,
-13 + previewY,
-40,
-38,
-8
-);
+    ctx.beginPath();
 
-ctx.fill();
+    ctx.roundRect(
+        150 + previewX,
+        30 + previewY,
+        70,
+        68,
+        18
+    );
 
-ctx.fillStyle = "black";
-
-ctx.beginPath();
-
-ctx.arc(
-36 + previewX,
-32 + previewY,
-9,
-0,
-Math.PI * 2
-);
-
-ctx.fill();
-
-ctx.beginPath();
-
-ctx.arc(
-92 + previewX,
-32 + previewY,
-9,
-0,
-Math.PI * 2
-);
-
-ctx.fill();
-
-requestAnimationFrame(drawPreview);
-
+    ctx.fill();
 }
 
 drawPreview();
 
 
-// --------------------------------------------------
+// =====================================================
 // VIRTUAL JOYSTICK
-// --------------------------------------------------
+// =====================================================
 
 const joystick =
-document.getElementById("joystick");
+    document.getElementById(
+        "joystick"
+    );
 
 const stick =
-document.getElementById("stick");
+    document.getElementById(
+        "stick"
+    );
 
-const direction =
-document.getElementById("direction");
+let dragging =
+    false;
 
-let dragging = false;
+function updateJoystick(
+    clientX,
+    clientY
+) {
 
-function moveJoystick(clientX, clientY) {
+    const rect =
+        joystick.getBoundingClientRect();
 
-const rect =
-joystick.getBoundingClientRect();
+    const centreX =
+        rect.left +
+        rect.width / 2;
 
-let x =
-clientX - rect.left - rect.width / 2;
+    const centreY =
+        rect.top +
+        rect.height / 2;
 
-let y =
-clientY - rect.top - rect.height / 2;
+    let x =
+        clientX -
+        centreX;
 
-const max =
-rect.width / 2 - 35;
+    let y =
+        clientY -
+        centreY;
 
-const distance =
-Math.sqrt(x * x + y * y);
+    const max =
+        48;
 
-if (distance > max) {
+    const distance =
+        Math.sqrt(
+            x * x +
+            y * y
+        );
 
-x = x / distance * max;
-y = y / distance * max;
+    if (
+        distance > max
+    ) {
 
+        x =
+            x / distance * max;
+
+        y =
+            y / distance * max;
+    }
+
+    stick.style.left =
+        (49 + x) + "px";
+
+    stick.style.top =
+        (49 + y) + "px";
+
+    const robotX =
+        Math.round(
+            x / max * 14
+        );
+
+    const robotY =
+        Math.round(
+            y / max * 9
+        );
+
+    previewX =
+        robotX * 2;
+
+    previewY =
+        robotY * 2;
+
+    drawPreview();
+
+    sendCommand(
+        "EYES:" +
+        robotX +
+        ":" +
+        robotY
+    );
 }
 
-stick.style.left =
-(rect.width / 2 - 35 + x) + "px";
+stick.addEventListener(
+    "pointerdown",
+    event => {
 
-stick.style.top =
-(rect.height / 2 - 35 + y) + "px";
+        dragging =
+            true;
 
-let dir = "Centre";
+        stick.setPointerCapture(
+            event.pointerId
+        );
 
-if (Math.abs(x) > 25) {
-
-dir =
-x < 0 ? "Left" : "Right";
-
-}
-
-if (Math.abs(y) > 25) {
-
-dir =
-y < 0 ? "Up" : "Down";
-
-}
-
-if (Math.abs(x) > 25 &&
-Math.abs(y) > 25) {
-
-if (y < 0) {
-
-dir =
-x < 0 ? "Up Left" : "Up Right";
-
-}
-else {
-
-dir =
-x < 0 ? "Down Left" : "Down Right";
-
-}
-
-}
-
-direction.textContent = dir;
-
-
-// Send eye movement
-
-sendCommand(
-"EYES:" +
-Math.round(x) +
-":" +
-Math.round(y)
+        sendCommand(
+            "EYES:MANUAL"
+        );
+    }
 );
 
-}
+stick.addEventListener(
+    "pointermove",
+    event => {
 
+        if (!dragging) {
+            return;
+        }
 
-joystick.addEventListener(
-"pointerdown",
-event => {
-
-dragging = true;
-
-joystick.setPointerCapture(
-event.pointerId
+        updateJoystick(
+            event.clientX,
+            event.clientY
+        );
+    }
 );
 
-moveJoystick(
-event.clientX,
-event.clientY
-);
+stick.addEventListener(
+    "pointerup",
+    event => {
 
-}
-);
+        dragging =
+            false;
 
+        stick.style.left =
+            "49px";
 
-joystick.addEventListener(
-"pointermove",
-event => {
-
-if (!dragging) return;
-
-moveJoystick(
-event.clientX,
-event.clientY
-);
-
-}
+        stick.style.top =
+            "49px";
+    }
 );
 
 
-joystick.addEventListener(
-"pointerup",
-event => {
+// =====================================================
+// AUTOMATIC EYES
+// =====================================================
 
-dragging = false;
+const autoSwitch =
+    document.getElementById(
+        "autoSwitch"
+    );
 
-stick.style.left = "75px";
-stick.style.top = "75px";
+autoSwitch.addEventListener(
+    "click",
+    () => {
 
-direction.textContent =
-"Centre";
+        autoSwitch.classList.toggle(
+            "active"
+        );
 
-sendCommand("EYES:0:0");
+        if (
+            autoSwitch.classList.contains(
+                "active"
+            )
+        ) {
 
-}
+            sendCommand(
+                "EYES:AUTO"
+            );
+
+        } else {
+
+            sendCommand(
+                "EYES:MANUAL"
+            );
+        }
+
+    }
 );
 
 </script>
