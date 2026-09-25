@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -279,6 +280,62 @@ footer {
     padding: 30px;
 }
 
+/* =====================================================
+   PAIRING
+   ===================================================== */
+
+#pairingPanel {
+    display: none;
+    margin-top: 18px;
+    padding: 18px;
+    background: #090c11;
+    border: 1px solid #303642;
+    border-radius: 12px;
+}
+
+#pairingPanel h3 {
+    margin: 0 0 7px;
+    font-size: 16px;
+}
+
+#pairingPanel p {
+    margin: 0 0 13px;
+    color: #858b98;
+    font-size: 13px;
+}
+
+#pairingRow {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#pairCode {
+    flex: 1;
+    min-width: 180px;
+    text-align: center;
+    letter-spacing: 5px;
+    font-size: 20px;
+}
+
+#pairStatus {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #858b98;
+}
+
+#pairStatus.success {
+    color: #55e39a;
+}
+
+#pairStatus.error {
+    color: #ff6868;
+}
+
+#controlsArea {
+    display: none;
+}
+
 @media (max-width: 600px) {
 
     .container {
@@ -296,6 +353,15 @@ footer {
     .connection-row button {
         width: 100%;
     }
+
+    #pairingRow {
+        flex-direction: column;
+    }
+
+    #pairingRow button {
+        width: 100%;
+    }
+
 }
 
 </style>
@@ -345,267 +411,317 @@ footer {
             Not connected
         </div>
 
+        <!-- PAIRING PANEL -->
+
+        <div id="pairingPanel">
+
+            <h3>Pair Robot</h3>
+
+            <p>
+                Enter the 6-digit code shown on the robot's OLED screen.
+            </p>
+
+            <div id="pairingRow">
+
+                <input
+                    id="pairCode"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="6"
+                    placeholder="6-digit code"
+                    autocomplete="off"
+                >
+
+                <button
+                    class="primary"
+                    id="pairButton"
+                >
+                    Pair Robot
+                </button>
+
+            </div>
+
+            <div id="pairStatus">
+                Waiting for pairing code...
+            </div>
+
+        </div>
+
     </div>
 
 
-    <div class="grid">
+    <!-- ALL CONTROLS -->
 
-        <!-- OLED -->
+    <div id="controlsArea">
 
-        <div class="card">
+        <div class="grid">
 
-            <h2>OLED Eyes</h2>
+            <!-- OLED -->
 
-            <div class="card-description">
-                Control the robot's eyes.
-            </div>
+            <div class="card">
 
-            <div class="controls">
+                <h2>OLED Eyes</h2>
 
-                <button id="oledOn">
-                    OLED ON
-                </button>
+                <div class="card-description">
+                    Control the robot's eyes.
+                </div>
 
-                <button id="oledOff">
-                    OLED OFF
-                </button>
+                <div class="controls">
 
-            </div>
+                    <button id="oledOn">
+                        OLED ON
+                    </button>
 
-            <div class="slider-row">
+                    <button id="oledOff">
+                        OLED OFF
+                    </button>
 
-                <label>
-                    OLED Brightness
+                    <button id="sleepButton">
+                        Sleep
+                    </button>
 
-                    <span
-                        class="value"
-                        id="oledBrightnessValue"
+                    <button id="wakeButton">
+                        Wake
+                    </button>
+
+                </div>
+
+                <div class="slider-row">
+
+                    <label>
+                        OLED Brightness
+
+                        <span
+                            class="value"
+                            id="oledBrightnessValue"
+                        >
+                            255
+                        </span>
+
+                    </label>
+
+                    <input
+                        id="oledBrightness"
+                        type="range"
+                        min="0"
+                        max="255"
+                        value="255"
                     >
-                        255
-                    </span>
 
-                </label>
+                </div>
 
-                <input
-                    id="oledBrightness"
-                    type="range"
-                    min="0"
-                    max="255"
-                    value="255"
-                >
+                <div class="eye-area">
 
-            </div>
+                    <canvas
+                        id="eyeCanvas"
+                        width="256"
+                        height="128"
+                    ></canvas>
 
-            <div class="eye-area">
+                </div>
 
-                <canvas
-                    id="eyeCanvas"
-                    width="256"
-                    height="128"
-                ></canvas>
-
-            </div>
-
-            <div class="joystick-container">
-
-                <div
-                    class="joystick"
-                    id="joystick"
-                >
+                <div class="joystick-container">
 
                     <div
-                        class="stick"
-                        id="stick"
+                        class="joystick"
+                        id="joystick"
+                    >
+
+                        <div
+                            class="stick"
+                            id="stick"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                <div class="auto-row">
+
+                    <span>
+                        Automatic Looking
+                    </span>
+
+                    <div
+                        class="switch active"
+                        id="autoSwitch"
                     ></div>
 
                 </div>
 
             </div>
 
-            <div class="auto-row">
 
-                <span>
-                    Automatic Looking
-                </span>
+            <!-- RGB -->
 
-                <div
-                    class="switch active"
-                    id="autoSwitch"
-                ></div>
+            <div class="card">
 
-            </div>
+                <h2>RGB LED</h2>
 
-        </div>
+                <div class="card-description">
+                    Control the built-in RGB LED.
+                </div>
 
+                <div class="controls">
 
-        <!-- RGB -->
+                    <button id="rgbOn">
+                        ON
+                    </button>
 
-        <div class="card">
+                    <button id="rgbOff">
+                        OFF
+                    </button>
 
-            <h2>RGB LED</h2>
+                    <button id="rainbow">
+                        Rainbow
+                    </button>
 
-            <div class="card-description">
-                Control the built-in RGB LED.
-            </div>
+                </div>
 
-            <div class="controls">
+                <div class="slider-row">
 
-                <button id="rgbOn">
-                    ON
-                </button>
+                    <label>
 
-                <button id="rgbOff">
-                    OFF
-                </button>
+                        Brightness
 
-                <button id="rainbow">
-                    Rainbow
-                </button>
+                        <span
+                            class="value"
+                            id="rgbBrightnessValue"
+                        >
+                            80
+                        </span>
 
-            </div>
+                    </label>
 
-            <div class="slider-row">
-
-                <label>
-
-                    Brightness
-
-                    <span
-                        class="value"
-                        id="rgbBrightnessValue"
+                    <input
+                        id="rgbBrightness"
+                        type="range"
+                        min="0"
+                        max="255"
+                        value="80"
                     >
-                        80
-                    </span>
 
-                </label>
+                </div>
 
-                <input
-                    id="rgbBrightness"
-                    type="range"
-                    min="0"
-                    max="255"
-                    value="80"
-                >
+                <div class="slider-row">
 
-            </div>
+                    <label>
+                        Colour
+                    </label>
 
-            <div class="slider-row">
+                    <div class="colour-grid">
 
-                <label>
-                    Colour
-                </label>
+                        <button
+                            class="colour white"
+                            data-colour="0"
+                        ></button>
 
-                <div class="colour-grid">
+                        <button
+                            class="colour red"
+                            data-colour="1"
+                        ></button>
 
-                    <button
-                        class="colour white"
-                        data-colour="0"
-                    ></button>
+                        <button
+                            class="colour green"
+                            data-colour="2"
+                        ></button>
 
-                    <button
-                        class="colour red"
-                        data-colour="1"
-                    ></button>
+                        <button
+                            class="colour blue"
+                            data-colour="3"
+                        ></button>
 
-                    <button
-                        class="colour green"
-                        data-colour="2"
-                    ></button>
+                        <button
+                            class="colour purple"
+                            data-colour="4"
+                        ></button>
 
-                    <button
-                        class="colour blue"
-                        data-colour="3"
-                    ></button>
-
-                    <button
-                        class="colour purple"
-                        data-colour="4"
-                    ></button>
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
 
+            <!-- 3W LED -->
 
-        <!-- 3W LED -->
+            <div class="card">
 
-        <div class="card">
+                <h2>3W LED</h2>
 
-            <h2>3W LED</h2>
+                <div class="card-description">
+                    Control the robot's main LED.
+                </div>
 
-            <div class="card-description">
-                Control the robot's main LED.
-            </div>
+                <div class="controls">
 
-            <div class="controls">
+                    <button id="ledOn">
+                        ON
+                    </button>
 
-                <button id="ledOn">
-                    ON
-                </button>
+                    <button id="ledOff">
+                        OFF
+                    </button>
 
-                <button id="ledOff">
-                    OFF
-                </button>
+                </div>
 
-            </div>
+                <div class="slider-row">
 
-            <div class="slider-row">
+                    <label>
 
-                <label>
+                        Brightness
 
-                    Brightness
+                        <span
+                            class="value"
+                            id="ledBrightnessValue"
+                        >
+                            255
+                        </span>
 
-                    <span
-                        class="value"
-                        id="ledBrightnessValue"
+                    </label>
+
+                    <input
+                        id="ledBrightness"
+                        type="range"
+                        min="0"
+                        max="255"
+                        value="255"
                     >
-                        255
-                    </span>
 
-                </label>
-
-                <input
-                    id="ledBrightness"
-                    type="range"
-                    min="0"
-                    max="255"
-                    value="255"
-                >
+                </div>
 
             </div>
 
-        </div>
 
+            <!-- HARDWARE -->
 
-        <!-- HARDWARE -->
+            <div class="card">
 
-        <div class="card">
+                <h2>Hardware</h2>
 
-            <h2>Hardware</h2>
+                <div class="card-description">
+                    Robot hardware status.
+                </div>
 
-            <div class="card-description">
-                Robot hardware status.
-            </div>
+                <div class="controls">
 
-            <div class="controls">
+                    <button>
+                        RGB LED
+                    </button>
 
-                <button>
-                    RGB LED
-                </button>
+                    <button>
+                        3W LED
+                    </button>
 
-                <button>
-                    3W LED
-                </button>
+                    <button>
+                        OLED
+                    </button>
 
-                <button>
-                    OLED
-                </button>
+                    <button>
+                        Joystick
+                    </button>
 
-                <button>
-                    Joystick
-                </button>
+                </div>
 
             </div>
 
@@ -630,8 +746,22 @@ let socket = null;
 let serialPort = null;
 let serialWriter = null;
 
+let paired = false;
+
 const statusElement =
     document.getElementById("status");
+
+const pairingPanel =
+    document.getElementById("pairingPanel");
+
+const controlsArea =
+    document.getElementById("controlsArea");
+
+const pairCode =
+    document.getElementById("pairCode");
+
+const pairStatus =
+    document.getElementById("pairStatus");
 
 
 // =====================================================
@@ -654,12 +784,125 @@ function setStatus(
 
 
 // =====================================================
+// PAIRING UI
+// =====================================================
+
+function showPairing() {
+
+    paired = false;
+
+    pairingPanel.style.display =
+        "block";
+
+    controlsArea.style.display =
+        "none";
+
+    pairCode.value =
+        "";
+
+    pairStatus.textContent =
+        "Enter the code shown on the robot.";
+
+    pairStatus.className = "";
+
+}
+
+
+function showControls() {
+
+    paired = true;
+
+    pairingPanel.style.display =
+        "none";
+
+    controlsArea.style.display =
+        "block";
+
+    pairStatus.textContent =
+        "";
+
+}
+
+
+function pairingFailed() {
+
+    paired = false;
+
+    pairStatus.textContent =
+        "Incorrect code. Try again.";
+
+    pairStatus.className =
+        "error";
+
+    pairCode.select();
+
+}
+
+
+function pairingSucceeded() {
+
+    paired = true;
+
+    pairingPanel.style.display =
+        "none";
+
+    controlsArea.style.display =
+        "block";
+
+    setStatus(
+        "Robot paired via Wi-Fi",
+        true
+    );
+
+}
+
+
+// =====================================================
 // SEND COMMAND
 // =====================================================
 
 async function sendCommand(
     command
 ) {
+
+    // Pairing command is allowed before pairing.
+    if (
+        command.startsWith("PAIR:")
+    ) {
+
+        if (
+            socket &&
+            socket.readyState === WebSocket.OPEN
+        ) {
+
+            socket.send(command);
+
+            console.log(
+                "Wi-Fi →",
+                command
+            );
+
+            return;
+        }
+
+        setStatus(
+            "Connect to the robot first"
+        );
+
+        return;
+    }
+
+
+    // All other commands require pairing.
+    if (!paired) {
+
+        setStatus(
+            "Pair the robot first"
+        );
+
+        return;
+    }
+
 
     // Wi-Fi
     if (
@@ -676,6 +919,7 @@ async function sendCommand(
 
         return;
     }
+
 
     // USB
     if (
@@ -701,6 +945,67 @@ async function sendCommand(
         "Connect to the robot first"
     );
 }
+
+
+// =====================================================
+// PAIR BUTTON
+// =====================================================
+
+document
+    .getElementById("pairButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            const code =
+                pairCode.value.trim();
+
+            if (
+                !/^\d{6}$/.test(code)
+            ) {
+
+                pairStatus.textContent =
+                    "Enter the 6-digit code from the OLED.";
+
+                pairStatus.className =
+                    "error";
+
+                return;
+            }
+
+            pairStatus.textContent =
+                "Checking code...";
+
+            pairStatus.className = "";
+
+            sendCommand(
+                "PAIR:" + code
+            );
+
+        }
+    );
+
+
+// =====================================================
+// ENTER KEY FOR PAIRING
+// =====================================================
+
+pairCode.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            document
+                .getElementById("pairButton")
+                .click();
+
+        }
+
+    }
+);
 
 
 // =====================================================
@@ -731,7 +1036,17 @@ document
             if (socket) {
 
                 socket.close();
+
             }
+
+            paired =
+                false;
+
+            controlsArea.style.display =
+                "none";
+
+            pairingPanel.style.display =
+                "none";
 
             setStatus(
                 "Connecting to robot..."
@@ -742,18 +1057,23 @@ document
                     "ws://" + ip + ":81"
                 );
 
+
             socket.onopen =
                 () => {
 
                     setStatus(
-                        "Connected via Wi-Fi",
+                        "Connected — waiting for pairing",
                         true
                     );
 
                     console.log(
                         "Wi-Fi connected"
                     );
+
+                    showPairing();
+
                 };
+
 
             socket.onmessage =
                 event => {
@@ -762,7 +1082,42 @@ document
                         "Robot:",
                         event.data
                     );
+
+
+                    if (
+                        event.data ===
+                        "PAIR_REQUIRED"
+                    ) {
+
+                        showPairing();
+
+                        return;
+                    }
+
+
+                    if (
+                        event.data ===
+                        "PAIR_OK"
+                    ) {
+
+                        pairingSucceeded();
+
+                        return;
+                    }
+
+
+                    if (
+                        event.data ===
+                        "PAIR_FAILED"
+                    ) {
+
+                        pairingFailed();
+
+                        return;
+                    }
+
                 };
+
 
             socket.onerror =
                 error => {
@@ -771,26 +1126,38 @@ document
                         error
                     );
 
+                    paired =
+                        false;
+
+                    pairingPanel.style.display =
+                        "none";
+
+                    controlsArea.style.display =
+                        "none";
+
                     setStatus(
                         "Wi-Fi connection failed"
                     );
+
                 };
+
 
             socket.onclose =
                 () => {
 
-                    if (
-                        statusElement
-                            .textContent
-                            .includes(
-                                "Wi-Fi"
-                            )
-                    ) {
+                    paired =
+                        false;
 
-                        setStatus(
-                            "Wi-Fi disconnected"
-                        );
-                    }
+                    pairingPanel.style.display =
+                        "none";
+
+                    controlsArea.style.display =
+                        "none";
+
+                    setStatus(
+                        "Wi-Fi disconnected"
+                    );
+
                 };
 
         }
@@ -832,6 +1199,21 @@ document
                 serialWriter =
                     serialPort.writable.getWriter();
 
+                /*
+                 * USB is a direct development connection.
+                 * The ESP32 accepts USB Serial commands
+                 * without the Wi-Fi pairing system.
+                 */
+
+                paired =
+                    true;
+
+                pairingPanel.style.display =
+                    "none";
+
+                controlsArea.style.display =
+                    "block";
+
                 setStatus(
                     "Connected via USB",
                     true
@@ -848,6 +1230,7 @@ document
                 setStatus(
                     "USB connection failed"
                 );
+
             }
 
         }
@@ -873,6 +1256,29 @@ document
         "click",
         () => sendCommand(
             "OLED:OFF"
+        )
+    );
+
+
+// =====================================================
+// SLEEP / WAKE
+// =====================================================
+
+document
+    .getElementById("sleepButton")
+    .addEventListener(
+        "click",
+        () => sendCommand(
+            "SLEEP"
+        )
+    );
+
+document
+    .getElementById("wakeButton")
+    .addEventListener(
+        "click",
+        () => sendCommand(
+            "WAKE"
         )
     );
 
@@ -904,6 +1310,7 @@ oledBrightness.addEventListener(
         sendCommand(
             "OLED_BRIGHTNESS:" + value
         );
+
     }
 );
 
@@ -967,6 +1374,7 @@ rgbBrightness.addEventListener(
         sendCommand(
             "BRIGHTNESS:" + value
         );
+
     }
 );
 
@@ -990,6 +1398,7 @@ document
                         "COLOUR:" +
                         button.dataset.colour
                     );
+
                 }
             );
 
@@ -1047,6 +1456,7 @@ ledBrightness.addEventListener(
         sendCommand(
             "LED_BRIGHTNESS:" + value
         );
+
     }
 );
 
@@ -1104,6 +1514,7 @@ function drawPreview() {
     );
 
     ctx.fill();
+
 }
 
 drawPreview();
@@ -1168,6 +1579,7 @@ function updateJoystick(
 
         y =
             y / distance * max;
+
     }
 
     stick.style.left =
@@ -1200,7 +1612,9 @@ function updateJoystick(
         ":" +
         robotY
     );
+
 }
+
 
 stick.addEventListener(
     "pointerdown",
@@ -1216,8 +1630,10 @@ stick.addEventListener(
         sendCommand(
             "EYES:MANUAL"
         );
+
     }
 );
+
 
 stick.addEventListener(
     "pointermove",
@@ -1231,8 +1647,10 @@ stick.addEventListener(
             event.clientX,
             event.clientY
         );
+
     }
 );
+
 
 stick.addEventListener(
     "pointerup",
@@ -1246,6 +1664,7 @@ stick.addEventListener(
 
         stick.style.top =
             "49px";
+
     }
 );
 
@@ -1282,6 +1701,7 @@ autoSwitch.addEventListener(
             sendCommand(
                 "EYES:MANUAL"
             );
+
         }
 
     }
@@ -1291,3 +1711,4 @@ autoSwitch.addEventListener(
 
 </body>
 </html>
+```
