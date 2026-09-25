@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>AI Robot Control</title>
 
 <style>
@@ -13,25 +14,16 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #0d1015;
+    background: #101318;
     color: white;
     min-height: 100vh;
 }
 
-.container {
-    width: min(950px, 94%);
-    margin: 30px auto;
-}
-
 header {
-    background: #191d24;
-    border-radius: 24px;
     padding: 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
+    text-align: center;
+    background: #181d24;
+    border-bottom: 1px solid #303640;
 }
 
 h1 {
@@ -39,55 +31,49 @@ h1 {
     font-size: 30px;
 }
 
-.subtitle {
-    color: #8d95a3;
-    margin-top: 7px;
+#status {
+    margin-top: 8px;
+    color: #9aa4b2;
 }
 
-.status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 12px;
-    color: #aaa;
-}
-
-.dot {
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: #777;
-}
-
-.dot.connected {
-    background: #35e06f;
-    box-shadow: 0 0 12px #35e06f;
+main {
+    max-width: 900px;
+    margin: auto;
+    padding: 25px;
 }
 
 button {
     border: none;
-    color: white;
-    background: #292f39;
-    padding: 14px 20px;
-    border-radius: 14px;
+    border-radius: 12px;
+    padding: 13px 20px;
     font-size: 16px;
     cursor: pointer;
-    transition: 0.15s;
+    background: #2b323d;
+    color: white;
+    margin: 5px;
 }
 
 button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.15);
+    background: #3a4350;
 }
 
-.connect {
-    background: #246bfe;
+#connectButton {
+    width: 100%;
+    background: #3b82f6;
+    font-size: 18px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+#connectButton:hover {
+    background: #2563eb;
 }
 
 .card {
-    background: #191d24;
-    border-radius: 22px;
-    padding: 25px;
+    background: #181d24;
+    border: 1px solid #303640;
+    border-radius: 18px;
+    padding: 20px;
     margin-bottom: 20px;
 }
 
@@ -99,280 +85,164 @@ button:hover {
     display: none;
 }
 
-.power {
-    width: 100%;
-    font-size: 22px;
-    font-weight: bold;
-    padding: 20px;
-}
-
-.power.on {
-    background: #168344;
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 input[type="range"] {
     width: 100%;
-    accent-color: #3979ff;
 }
 
 .value {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 20px;
+    font-size: 18px;
+    margin-top: 8px;
+    color: #b9c2ce;
 }
 
-.colours {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-}
-
-.red {
-    background: #d93232;
-}
-
-.green {
-    background: #25a653;
-}
-
-.blue {
-    background: #2768d8;
-}
-
-.purple {
-    background: #913bd0;
-}
-
-.white {
-    background: #eeeeee;
-    color: #111;
-}
-
-.rainbow {
-    width: 100%;
-    margin-top: 15px;
-    background: linear-gradient(
-        90deg,
-        red,
-        orange,
-        yellow,
-        green,
-        cyan,
-        blue,
-        violet
-    );
-    font-weight: bold;
-}
-
-.detected {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
+#features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .feature {
-    background: #242a33;
-    border-radius: 15px;
-    padding: 18px;
-    text-align: center;
-}
-
-.feature-icon {
-    font-size: 30px;
-}
-
-.feature-name {
-    margin-top: 8px;
-    font-weight: bold;
-}
-
-.message {
-    text-align: center;
-    color: #8d95a3;
-    margin: 20px 0;
-    min-height: 20px;
-}
-
-@media (max-width: 600px) {
-
-    header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .colours {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    background: #252c36;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
 <header>
-
-    <div>
-        <h1>🤖 AI Robot Control</h1>
-
-        <div class="subtitle">
-            Automatic hardware detection
-        </div>
-
-        <div class="status">
-            <span id="statusDot" class="dot"></span>
-            <span id="statusText">Disconnected</span>
-        </div>
-    </div>
-
-    <button class="connect" onclick="connectRobot()">
-        🔌 Connect Robot
-    </button>
-
+    <h1>🤖 AI Robot Control</h1>
+    <div id="status">Not connected</div>
 </header>
 
+<main>
 
-<!-- DETECTED HARDWARE -->
+    <button id="connectButton">🔌 Connect Robot</button>
 
-<div class="card">
+    <!-- Detected hardware -->
+    <div class="card">
+        <h2>Detected Hardware</h2>
+        <div id="features">
+            <span class="feature">Nothing detected</span>
+        </div>
+    </div>
 
-    <h2>🔎 Detected Hardware</h2>
+    <!-- RGB -->
+    <div id="rgbCard" class="card hidden">
+        <h2>🌈 RGB LED</h2>
 
-    <div id="detectedHardware" class="detected">
-
-        <div class="feature">
-            <div class="feature-icon">❔</div>
-            <div class="feature-name">
-                Waiting for robot...
-            </div>
+        <div class="controls">
+            <button onclick="sendCommand('COLOUR:0')">🔴 Red</button>
+            <button onclick="sendCommand('COLOUR:1')">🟢 Green</button>
+            <button onclick="sendCommand('COLOUR:2')">🔵 Blue</button>
+            <button onclick="sendCommand('COLOUR:3')">🟣 Purple</button>
+            <button onclick="sendCommand('COLOUR:4')">⚪ White</button>
+            <button onclick="sendCommand('RAINBOW')">🌈 Rainbow</button>
         </div>
 
+        <br>
+
+        <label>
+            Brightness
+        </label>
+
+        <input
+            id="brightness"
+            type="range"
+            min="0"
+            max="255"
+            value="128"
+        >
+
+        <div class="value">
+            Brightness: <span id="brightnessValue">128</span>
+        </div>
     </div>
 
-</div>
+    <!-- 3W LED -->
+    <div id="ledCard" class="card hidden">
+        <h2>💡 3W LED</h2>
 
+        <div class="controls">
+            <button onclick="sendCommand('ON')">
+                💡 Turn ON
+            </button>
 
-<!-- LED CONTROL -->
-
-<div id="ledSection" class="card hidden">
-
-    <h2>💡 LED</h2>
-
-    <button id="powerButton"
-            class="power"
-            onclick="togglePower()">
-
-        💡 LED OFF
-
-    </button>
-
-
-    <h3>🔆 Brightness</h3>
-
-    <input
-        id="brightness"
-        type="range"
-        min="0"
-        max="255"
-        value="128"
-        oninput="changeBrightness(this.value)"
-    >
-
-    <div class="value">
-
-        <span id="brightnessValue">128</span>
-        / 255
-
+            <button onclick="sendCommand('OFF')">
+                🌑 Turn OFF
+            </button>
+        </div>
     </div>
 
-</div>
+    <!-- Joystick -->
+    <div id="joystickCard" class="card hidden">
+        <h2>🕹️ Joystick</h2>
 
+        <p>
+            Joystick detected.
+        </p>
 
-<!-- RGB CONTROL -->
-
-<div id="rgbSection" class="card hidden">
-
-    <h2>🌈 RGB LED</h2>
-
-    <div class="colours">
-
-        <button class="red"
-                onclick="setColour(0)">
-            🔴 Red
-        </button>
-
-        <button class="green"
-                onclick="setColour(1)">
-            🟢 Green
-        </button>
-
-        <button class="blue"
-                onclick="setColour(2)">
-            🔵 Blue
-        </button>
-
-        <button class="purple"
-                onclick="setColour(3)">
-            🟣 Purple
-        </button>
-
-        <button class="white"
-                onclick="setColour(4)">
-            ⚪ White
-        </button>
-
+        <p>
+            The joystick controls the robot directly through the ESP32.
+        </p>
     </div>
 
-    <button class="rainbow"
-            onclick="rainbow()">
+    <!-- Future hardware -->
+    <div id="servoCard" class="card hidden">
+        <h2>🦾 Servos</h2>
+        <p>Servo hardware detected.</p>
+    </div>
 
-        🌈 Rainbow Mode
+    <div id="cameraCard" class="card hidden">
+        <h2>📷 Camera</h2>
+        <p>Camera hardware detected.</p>
+    </div>
 
-    </button>
+    <div id="distanceCard" class="card hidden">
+        <h2>📡 Distance Sensor</h2>
+        <p>Distance sensor detected.</p>
+    </div>
 
-</div>
-
-
-<div id="message" class="message">
-    Connect your ESP32 using USB.
-</div>
-
-</div>
-
+</main>
 
 <script>
 
-// ==========================================
-// SERIAL VARIABLES
-// ==========================================
-
 let port = null;
-let writer = null;
 let reader = null;
+let writer = null;
 
-let robotConnected = false;
-let lightOn = false;
+let detectedFeatures = new Set();
 
-let detectedFeatures = [];
+const statusText = document.getElementById("status");
+const featuresBox = document.getElementById("features");
+
+const connectButton =
+    document.getElementById("connectButton");
 
 
-// ==========================================
+// --------------------------------------------------
 // CONNECT
-// ==========================================
+// --------------------------------------------------
 
-async function connectRobot() {
-
-    if (!("serial" in navigator)) {
-
-        alert(
-            "Web Serial is not supported by this browser. Try Chrome or Edge."
-        );
-
-        return;
-    }
+connectButton.addEventListener("click", async () => {
 
     try {
+
+        if (!("serial" in navigator)) {
+
+            statusText.textContent =
+                "Web Serial is not supported by this browser.";
+
+            return;
+        }
 
         port = await navigator.serial.requestPort();
 
@@ -382,19 +252,13 @@ async function connectRobot() {
 
         writer = port.writable.getWriter();
 
-        robotConnected = true;
+        statusText.textContent =
+            "Connected — detecting hardware...";
 
-        document.getElementById("statusText").textContent =
-            "Robot Connected";
+        connectButton.textContent =
+            "✅ Robot Connected";
 
-        document.getElementById("statusDot")
-            .classList.add("connected");
-
-        document.getElementById("message").textContent =
-            "Connected! Detecting hardware...";
-
-        // Start listening for ESP32 messages
-        startReader();
+        startReading();
 
         // Ask ESP32 what hardware it has
         await sendCommand("IDENTIFY");
@@ -403,268 +267,21 @@ async function connectRobot() {
 
         console.error(error);
 
-        document.getElementById("message").textContent =
+        statusText.textContent =
             "Connection cancelled or failed.";
-
     }
-}
+});
 
 
-// ==========================================
-// SERIAL READER
-// ==========================================
-
-async function startReader() {
-
-    if (!port || !port.readable) {
-        return;
-    }
-
-    reader = port.readable.getReader();
-
-    let buffer = "";
-
-    try {
-
-        while (true) {
-
-            const { value, done } = await reader.read();
-
-            if (done) {
-                break;
-            }
-
-            const text =
-                new TextDecoder().decode(value);
-
-            buffer += text;
-
-            const lines = buffer.split("\n");
-
-            buffer = lines.pop();
-
-            for (const line of lines) {
-
-                handleRobotMessage(
-                    line.trim()
-                );
-            }
-        }
-
-    } catch (error) {
-
-        console.log(
-            "Serial reader stopped:",
-            error
-        );
-
-    }
-}
-
-
-// ==========================================
-// ROBOT MESSAGES
-// ==========================================
-
-function handleRobotMessage(message) {
-
-    if (!message) {
-        return;
-    }
-
-    console.log("Robot:", message);
-
-
-    // DEVICE NAME
-
-    if (message.startsWith("DEVICE:")) {
-
-        const device =
-            message.substring(7);
-
-        document.getElementById("message").textContent =
-            "Detected: " + device;
-
-        return;
-    }
-
-
-    // FEATURE
-
-    if (message.startsWith("FEATURE:")) {
-
-        const feature =
-            message.substring(8);
-
-        if (!detectedFeatures.includes(feature)) {
-
-            detectedFeatures.push(feature);
-
-            updateHardwareDisplay();
-            updateControls();
-        }
-
-        return;
-    }
-
-
-    // READY
-
-    if (message === "READY") {
-
-        document.getElementById("message").textContent =
-            "Robot ready! 🤖";
-
-        updateHardwareDisplay();
-        updateControls();
-
-        return;
-    }
-
-
-    // NORMAL RESPONSES
-
-    if (message.startsWith("OK:")) {
-
-        console.log(message);
-
-    }
-}
-
-
-// ==========================================
-// HARDWARE DISPLAY
-// ==========================================
-
-function updateHardwareDisplay() {
-
-    const container =
-        document.getElementById("detectedHardware");
-
-    container.innerHTML = "";
-
-    if (detectedFeatures.length === 0) {
-
-        container.innerHTML = `
-            <div class="feature">
-                <div class="feature-icon">❔</div>
-                <div class="feature-name">
-                    No features detected
-                </div>
-            </div>
-        `;
-
-        return;
-    }
-
-
-    detectedFeatures.forEach(feature => {
-
-        let icon = "🔧";
-        let name = feature;
-
-
-        if (feature === "RGB") {
-            icon = "🌈";
-            name = "RGB LED";
-        }
-
-        if (feature === "LED") {
-            icon = "💡";
-            name = "3W LED";
-        }
-
-        if (feature === "JOYSTICK") {
-            icon = "🎮";
-            name = "Joystick";
-        }
-
-        if (feature === "SERVO") {
-            icon = "⚙️";
-            name = "Servo";
-        }
-
-        if (feature === "CAMERA") {
-            icon = "📷";
-            name = "Camera";
-        }
-
-        if (feature === "DISTANCE") {
-            icon = "📡";
-            name = "Distance Sensor";
-        }
-
-
-        container.innerHTML += `
-
-            <div class="feature">
-
-                <div class="feature-icon">
-                    ${icon}
-                </div>
-
-                <div class="feature-name">
-                    ${name}
-                </div>
-
-            </div>
-
-        `;
-
-    });
-
-}
-
-
-// ==========================================
-// SHOW/HIDE CONTROLS
-// ==========================================
-
-function updateControls() {
-
-    // RGB controls
-
-    if (detectedFeatures.includes("RGB")) {
-
-        document
-            .getElementById("rgbSection")
-            .classList.remove("hidden");
-
-    } else {
-
-        document
-            .getElementById("rgbSection")
-            .classList.add("hidden");
-    }
-
-
-    // LED controls
-
-    if (detectedFeatures.includes("LED")) {
-
-        document
-            .getElementById("ledSection")
-            .classList.remove("hidden");
-
-    } else {
-
-        document
-            .getElementById("ledSection")
-            .classList.add("hidden");
-    }
-
-}
-
-
-// ==========================================
+// --------------------------------------------------
 // SEND COMMAND
-// ==========================================
+// --------------------------------------------------
 
 async function sendCommand(command) {
 
     if (!writer) {
 
-        document.getElementById("message").textContent =
+        statusText.textContent =
             "Connect the robot first.";
 
         return;
@@ -673,91 +290,212 @@ async function sendCommand(command) {
     try {
 
         const data =
-            new TextEncoder()
-                .encode(command + "\n");
+            new TextEncoder().encode(command + "\n");
 
         await writer.write(data);
-
-        console.log("Sent:", command);
 
     } catch (error) {
 
         console.error(error);
 
-        document.getElementById("message").textContent =
-            "Could not send command.";
+        statusText.textContent =
+            "Failed to send command.";
     }
 }
 
 
-// ==========================================
-// POWER
-// ==========================================
+// --------------------------------------------------
+// READ ESP32
+// --------------------------------------------------
 
-function togglePower() {
+async function startReading() {
 
-    lightOn = !lightOn;
+    const decoder = new TextDecoder();
+    let buffer = "";
 
-    const button =
-        document.getElementById("powerButton");
+    reader = port.readable.getReader();
 
+    try {
 
-    if (lightOn) {
+        while (true) {
 
-        sendCommand("ON");
+            const { value, done } =
+                await reader.read();
 
-        button.textContent =
-            "💡 LED ON";
+            if (done) break;
 
-        button.classList.add("on");
+            buffer += decoder.decode(value, {
+                stream: true
+            });
 
-    } else {
+            let lines = buffer.split("\n");
 
-        sendCommand("OFF");
+            buffer = lines.pop();
 
-        button.textContent =
-            "💡 LED OFF";
+            for (let line of lines) {
 
-        button.classList.remove("on");
+                line = line.trim();
+
+                if (line.length > 0) {
+
+                    handleRobotMessage(line);
+                }
+            }
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        statusText.textContent =
+            "Robot disconnected.";
     }
 }
 
 
-// ==========================================
+// --------------------------------------------------
+// HANDLE ROBOT INFORMATION
+// --------------------------------------------------
+
+function handleRobotMessage(message) {
+
+    console.log("ESP32:", message);
+
+    if (message.startsWith("DEVICE:")) {
+
+        statusText.textContent =
+            "Connected: " +
+            message.substring(7);
+
+        return;
+    }
+
+    if (message.startsWith("FEATURE:")) {
+
+        const feature =
+            message.substring(8).trim();
+
+        detectedFeatures.add(feature);
+
+        updateHardwareDisplay();
+
+        return;
+    }
+
+    if (message === "READY") {
+
+        updateHardwareDisplay();
+
+        return;
+    }
+}
+
+
+// --------------------------------------------------
+// SHOW DETECTED HARDWARE
+// --------------------------------------------------
+
+function updateHardwareDisplay() {
+
+    featuresBox.innerHTML = "";
+
+    if (detectedFeatures.size === 0) {
+
+        featuresBox.innerHTML =
+            '<span class="feature">Detecting...</span>';
+
+        return;
+    }
+
+    detectedFeatures.forEach(feature => {
+
+        const item =
+            document.createElement("span");
+
+        item.className = "feature";
+
+        item.textContent =
+            feature;
+
+        featuresBox.appendChild(item);
+
+    });
+
+
+    // RGB
+    document
+        .getElementById("rgbCard")
+        .classList.toggle(
+            "hidden",
+            !detectedFeatures.has("RGB")
+        );
+
+
+    // 3W LED
+    document
+        .getElementById("ledCard")
+        .classList.toggle(
+            "hidden",
+            !detectedFeatures.has("LED")
+        );
+
+
+    // Joystick
+    document
+        .getElementById("joystickCard")
+        .classList.toggle(
+            "hidden",
+            !detectedFeatures.has("JOYSTICK")
+        );
+
+
+    // Servo
+    document
+        .getElementById("servoCard")
+        .classList.toggle(
+            "hidden",
+            !detectedFeatures.has("SERVO")
+        );
+
+
+    // Camera
+    document
+        .getElementById("cameraCard")
+        .classList.toggle(
+            "hidden",
+            !detectedFeatures.has("CAMERA")
+        );
+
+
+    // Distance sensor
+    document
+        .getElementById("distanceCard")
+        .classList.toggle(
+            "hidden",
+            !detectedFeatures.has("DISTANCE")
+        );
+}
+
+
+// --------------------------------------------------
 // BRIGHTNESS
-// ==========================================
+// --------------------------------------------------
 
-function changeBrightness(value) {
+const brightness =
+    document.getElementById("brightness");
 
-    document.getElementById("brightnessValue")
-        .textContent = value;
+const brightnessValue =
+    document.getElementById("brightnessValue");
 
-    sendCommand(
-        "BRIGHTNESS:" + value
-    );
-}
+brightness.addEventListener("input", () => {
 
-
-// ==========================================
-// COLOUR
-// ==========================================
-
-function setColour(number) {
+    brightnessValue.textContent =
+        brightness.value;
 
     sendCommand(
-        "COLOUR:" + number
+        "BRIGHTNESS:" + brightness.value
     );
-}
-
-
-// ==========================================
-// RAINBOW
-// ==========================================
-
-function rainbow() {
-
-    sendCommand("RAINBOW");
-}
+});
 
 </script>
 
