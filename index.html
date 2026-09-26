@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -481,6 +482,7 @@ footer {
     flex-direction: column;
     justify-content: flex-end;
     gap: 12px;
+    overflow-y: auto;
 }
 
 .ai-message {
@@ -489,6 +491,7 @@ footer {
     border-radius: 14px;
     font-size: 14px;
     line-height: 1.5;
+    white-space: pre-wrap;
 }
 
 .ai-message.robot {
@@ -502,11 +505,26 @@ footer {
     color: #000000;
 }
 
+.ai-input-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+#aiInput {
+    flex: 1;
+    min-width: 0;
+}
+
+#aiSendButton {
+    min-width: 90px;
+}
+
 .ai-controls {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    margin-top: 18px;
+    margin-top: 12px;
 }
 
 .ai-talk {
@@ -575,9 +593,18 @@ footer {
         grid-template-columns: 1fr;
     }
 
+    .ai-input-row {
+        flex-direction: column;
+    }
+
+    #aiSendButton {
+        width: 100%;
+    }
+
 }
 
 </style>
+
 </head>
 
 <body>
@@ -589,483 +616,503 @@ footer {
 
 <div class="container">
 
-    <!-- CONNECTION -->
+```
+<!-- CONNECTION -->
 
-    <div class="connection">
+<div class="connection">
 
-        <h2>Robot Connection</h2>
+    <h2>Robot Connection</h2>
 
-        <div class="connection-row">
+    <div class="connection-row">
+
+        <input
+            id="ipAddress"
+            type="text"
+            value="192.168.0.243"
+            placeholder="Robot IP address"
+        >
+
+        <button
+            class="primary"
+            id="wifiButton"
+        >
+            Connect Wi-Fi
+        </button>
+
+        <button id="usbButton">
+            Connect USB
+        </button>
+
+    </div>
+
+    <div
+        id="status"
+        class="status"
+    >
+        Not connected
+    </div>
+
+    <!-- PAIRING PANEL -->
+
+    <div id="pairingPanel">
+
+        <h3>Pair Robot</h3>
+
+        <p>
+            Enter the 6-digit code shown on the robot's OLED screen.
+        </p>
+
+        <div id="pairingRow">
 
             <input
-                id="ipAddress"
+                id="pairCode"
                 type="text"
-                value="192.168.0.243"
-                placeholder="Robot IP address"
+                inputmode="numeric"
+                maxlength="6"
+                placeholder="6-digit code"
+                autocomplete="off"
             >
 
             <button
                 class="primary"
-                id="wifiButton"
+                id="pairButton"
             >
-                Connect Wi-Fi
-            </button>
-
-            <button id="usbButton">
-                Connect USB
+                Pair Robot
             </button>
 
         </div>
 
-        <div
-            id="status"
-            class="status"
-        >
-            Not connected
-        </div>
-
-        <!-- PAIRING PANEL -->
-
-        <div id="pairingPanel">
-
-            <h3>Pair Robot</h3>
-
-            <p>
-                Enter the 6-digit code shown on the robot's OLED screen.
-            </p>
-
-            <div id="pairingRow">
-
-                <input
-                    id="pairCode"
-                    type="text"
-                    inputmode="numeric"
-                    maxlength="6"
-                    placeholder="6-digit code"
-                    autocomplete="off"
-                >
-
-                <button
-                    class="primary"
-                    id="pairButton"
-                >
-                    Pair Robot
-                </button>
-
-            </div>
-
-            <div id="pairStatus">
-                Waiting for pairing code...
-            </div>
-
+        <div id="pairStatus">
+            Waiting for pairing code...
         </div>
 
     </div>
 
+</div>
 
-    <!-- MODE SELECTOR -->
 
-    <div id="modeArea">
+<!-- MODE SELECTOR -->
 
-        <div class="mode-card">
+<div id="modeArea">
 
-            <h2>Robot Mode</h2>
+    <div class="mode-card">
 
-            <div class="mode-description">
-                Choose how you want to use your robot.
-            </div>
+        <h2>Robot Mode</h2>
 
-            <div class="mode-buttons">
-
-                <button
-                    class="mode-button active"
-                    id="controlModeButton"
-                >
-                    🎮 Robot Controls
-                </button>
-
-                <button
-                    class="mode-button"
-                    id="aiModeButton"
-                >
-                    🧠 AI Mode
-                </button>
-
-            </div>
-
+        <div class="mode-description">
+            Choose how you want to use your robot.
         </div>
 
-    </div>
-
-
-    <!-- AI MODE -->
-
-    <div id="aiArea">
-
-        <div class="ai-card">
-
-            <div class="ai-header">
-
-                <h2>🧠 AI Mode</h2>
-
-                <div
-                    class="ai-status"
-                    id="aiStatus"
-                >
-                    AI Ready
-                </div>
-
-            </div>
-
-
-            <!-- CAMERA + MICROPHONE -->
-
-            <div class="ai-hardware">
-
-                <div class="camera-box">
-
-                    <video
-                        id="aiCamera"
-                        autoplay
-                        playsinline
-                        muted
-                    ></video>
-
-                    <div id="cameraStatus">
-                        📷 Camera starting...
-                    </div>
-
-                </div>
-
-                <div
-                    class="mic-status"
-                    id="micStatus"
-                >
-                    🎤 Microphone starting...
-                </div>
-
-            </div>
-
-
-            <!-- CHAT -->
-
-            <div
-                class="ai-chat"
-                id="aiChat"
-            >
-
-                <div class="ai-message robot">
-                    Hi! I'm your robot. AI Mode is ready.
-                </div>
-
-            </div>
-
-
-            <!-- AI CONTROLS -->
-
-            <div class="ai-controls">
-
-                <button
-                    class="primary ai-talk"
-                    id="talkButton"
-                >
-                    🎤 Talk
-                </button>
-
-                <button
-                    class="ai-camera"
-                    id="cameraButton"
-                >
-                    📷 Camera
-                </button>
-
-            </div>
-
+        <div class="mode-buttons">
 
             <button
-                class="ai-exit"
-                id="exitAiButton"
+                class="mode-button active"
+                id="controlModeButton"
             >
-                ← Back to Robot Controls
+                🎮 Robot Controls
+            </button>
+
+            <button
+                class="mode-button"
+                id="aiModeButton"
+            >
+                🧠 AI Mode
             </button>
 
         </div>
 
     </div>
 
+</div>
 
-    <!-- ALL CONTROLS -->
 
-    <div id="controlsArea">
+<!-- AI MODE -->
 
-        <div class="grid">
+<div id="aiArea">
 
-            <!-- OLED -->
+    <div class="ai-card">
 
-            <div class="card">
+        <div class="ai-header">
 
-                <h2>OLED Eyes</h2>
+            <h2>🧠 AI Mode</h2>
 
-                <div class="card-description">
-                    Control the robot's eyes.
+            <div
+                class="ai-status"
+                id="aiStatus"
+            >
+                AI Ready
+            </div>
+
+        </div>
+
+
+        <!-- CAMERA + MICROPHONE -->
+
+        <div class="ai-hardware">
+
+            <div class="camera-box">
+
+                <video
+                    id="aiCamera"
+                    autoplay
+                    playsinline
+                    muted
+                ></video>
+
+                <div id="cameraStatus">
+                    📷 Camera starting...
                 </div>
 
-                <div class="controls">
+            </div>
 
-                    <button id="oledOn">
-                        OLED ON
-                    </button>
+            <div
+                class="mic-status"
+                id="micStatus"
+            >
+                🎤 Microphone starting...
+            </div>
 
-                    <button id="oledOff">
-                        OLED OFF
-                    </button>
+        </div>
 
-                    <button id="sleepButton">
-                        Sleep
-                    </button>
 
-                    <button id="wakeButton">
-                        Wake
-                    </button>
+        <!-- CHAT -->
 
-                </div>
+        <div
+            class="ai-chat"
+            id="aiChat"
+        >
 
-                <div class="slider-row">
+            <div class="ai-message robot">
+                Hi! I'm your robot. AI Mode is ready.
+            </div>
 
-                    <label>
-                        OLED Brightness
+        </div>
 
-                        <span
-                            class="value"
-                            id="oledBrightnessValue"
-                        >
-                            255
-                        </span>
 
-                    </label>
+        <!-- AI TEXT INPUT -->
 
-                    <input
-                        id="oledBrightness"
-                        type="range"
-                        min="0"
-                        max="255"
-                        value="255"
+        <div class="ai-input-row">
+
+            <input
+                id="aiInput"
+                type="text"
+                placeholder="Ask your robot something..."
+                autocomplete="off"
+            >
+
+            <button
+                class="primary"
+                id="aiSendButton"
+            >
+                Send
+            </button>
+
+        </div>
+
+
+        <!-- AI CONTROLS -->
+
+        <div class="ai-controls">
+
+            <button
+                class="primary ai-talk"
+                id="talkButton"
+            >
+                🎤 Talk
+            </button>
+
+            <button
+                class="ai-camera"
+                id="cameraButton"
+            >
+                📷 Camera
+            </button>
+
+        </div>
+
+
+        <button
+            class="ai-exit"
+            id="exitAiButton"
+        >
+            ← Back to Robot Controls
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ALL CONTROLS -->
+
+<div id="controlsArea">
+
+    <div class="grid">
+
+        <!-- OLED -->
+
+        <div class="card">
+
+            <h2>OLED Eyes</h2>
+
+            <div class="card-description">
+                Control the robot's eyes.
+            </div>
+
+            <div class="controls">
+
+                <button id="oledOn">
+                    OLED ON
+                </button>
+
+                <button id="oledOff">
+                    OLED OFF
+                </button>
+
+                <button id="sleepButton">
+                    Sleep
+                </button>
+
+                <button id="wakeButton">
+                    Wake
+                </button>
+
+            </div>
+
+            <div class="slider-row">
+
+                <label>
+                    OLED Brightness
+
+                    <span
+                        class="value"
+                        id="oledBrightnessValue"
                     >
-
-                </div>
-
-                <div class="eye-area">
-
-                    <canvas
-                        id="eyeCanvas"
-                        width="256"
-                        height="128"
-                    ></canvas>
-
-                </div>
-
-                <div class="joystick-container">
-
-                    <div
-                        class="joystick"
-                        id="joystick"
-                    >
-
-                        <div
-                            class="stick"
-                            id="stick"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-                <div class="auto-row">
-
-                    <span>
-                        Automatic Looking
+                        255
                     </span>
 
+                </label>
+
+                <input
+                    id="oledBrightness"
+                    type="range"
+                    min="0"
+                    max="255"
+                    value="255"
+                >
+
+            </div>
+
+            <div class="eye-area">
+
+                <canvas
+                    id="eyeCanvas"
+                    width="256"
+                    height="128"
+                ></canvas>
+
+            </div>
+
+            <div class="joystick-container">
+
+                <div
+                    class="joystick"
+                    id="joystick"
+                >
+
                     <div
-                        class="switch active"
-                        id="autoSwitch"
+                        class="stick"
+                        id="stick"
                     ></div>
 
                 </div>
 
             </div>
 
+            <div class="auto-row">
 
-            <!-- RGB -->
+                <span>
+                    Automatic Looking
+                </span>
 
-            <div class="card">
+                <div
+                    class="switch active"
+                    id="autoSwitch"
+                ></div>
 
-                <h2>RGB LED</h2>
+            </div>
 
-                <div class="card-description">
-                    Control the built-in RGB LED.
-                </div>
+        </div>
 
-                <div class="controls">
 
-                    <button id="rgbOn">
-                        ON
-                    </button>
+        <!-- RGB -->
 
-                    <button id="rgbOff">
-                        OFF
-                    </button>
+        <div class="card">
 
-                    <button id="rainbow">
-                        Rainbow
-                    </button>
+            <h2>RGB LED</h2>
 
-                </div>
+            <div class="card-description">
+                Control the built-in RGB LED.
+            </div>
 
-                <div class="slider-row">
+            <div class="controls">
 
-                    <label>
+                <button id="rgbOn">
+                    ON
+                </button>
 
-                        Brightness
+                <button id="rgbOff">
+                    OFF
+                </button>
 
-                        <span
-                            class="value"
-                            id="rgbBrightnessValue"
-                        >
-                            80
-                        </span>
+                <button id="rainbow">
+                    Rainbow
+                </button>
 
-                    </label>
+            </div>
 
-                    <input
-                        id="rgbBrightness"
-                        type="range"
-                        min="0"
-                        max="255"
-                        value="80"
+            <div class="slider-row">
+
+                <label>
+
+                    Brightness
+
+                    <span
+                        class="value"
+                        id="rgbBrightnessValue"
                     >
+                        80
+                    </span>
 
-                </div>
+                </label>
 
-                <div class="slider-row">
+                <input
+                    id="rgbBrightness"
+                    type="range"
+                    min="0"
+                    max="255"
+                    value="80"
+                >
 
-                    <label>
-                        Colour
-                    </label>
+            </div>
 
-                    <div class="colour-grid">
+            <div class="slider-row">
 
-                        <button
-                            class="colour white"
-                            data-colour="0"
-                        ></button>
+                <label>
+                    Colour
+                </label>
 
-                        <button
-                            class="colour red"
-                            data-colour="1"
-                        ></button>
+                <div class="colour-grid">
 
-                        <button
-                            class="colour green"
-                            data-colour="2"
-                        ></button>
+                    <button
+                        class="colour white"
+                        data-colour="0"
+                    ></button>
 
-                        <button
-                            class="colour blue"
-                            data-colour="3"
-                        ></button>
+                    <button
+                        class="colour red"
+                        data-colour="1"
+                    ></button>
 
-                        <button
-                            class="colour purple"
-                            data-colour="4"
-                        ></button>
+                    <button
+                        class="colour green"
+                        data-colour="2"
+                    ></button>
 
-                    </div>
+                    <button
+                        class="colour blue"
+                        data-colour="3"
+                    ></button>
+
+                    <button
+                        class="colour purple"
+                        data-colour="4"
+                    ></button>
 
                 </div>
 
             </div>
 
+        </div>
 
-            <!-- 3W LED -->
 
-            <div class="card">
+        <!-- 3W LED -->
 
-                <h2>3W LED</h2>
+        <div class="card">
 
-                <div class="card-description">
-                    Control the robot's main LED.
-                </div>
+            <h2>3W LED</h2>
 
-                <div class="controls">
+            <div class="card-description">
+                Control the robot's main LED.
+            </div>
 
-                    <button id="ledOn">
-                        ON
-                    </button>
+            <div class="controls">
 
-                    <button id="ledOff">
-                        OFF
-                    </button>
+                <button id="ledOn">
+                    ON
+                </button>
 
-                </div>
-
-                <div class="slider-row">
-
-                    <label>
-
-                        Brightness
-
-                        <span
-                            class="value"
-                            id="ledBrightnessValue"
-                        >
-                            255
-                        </span>
-
-                    </label>
-
-                    <input
-                        id="ledBrightness"
-                        type="range"
-                        min="0"
-                        max="255"
-                        value="255"
-                    >
-
-                </div>
+                <button id="ledOff">
+                    OFF
+                </button>
 
             </div>
 
+            <div class="slider-row">
 
-            <!-- HARDWARE -->
+                <label>
 
-            <div class="card">
+                    Brightness
 
-                <h2>Hardware</h2>
+                    <span
+                        class="value"
+                        id="ledBrightnessValue"
+                    >
+                        255
+                    </span>
 
-                <div class="card-description">
-                    Robot hardware status.
-                </div>
+                </label>
 
-                <div class="controls">
+                <input
+                    id="ledBrightness"
+                    type="range"
+                    min="0"
+                    max="255"
+                    value="255"
+                >
 
-                    <button>
-                        RGB LED
-                    </button>
+            </div>
 
-                    <button>
-                        3W LED
-                    </button>
+        </div>
 
-                    <button>
-                        OLED
-                    </button>
 
-                    <button>
-                        Joystick
-                    </button>
+        <!-- HARDWARE -->
 
-                </div>
+        <div class="card">
+
+            <h2>Hardware</h2>
+
+            <div class="card-description">
+                Robot hardware status.
+            </div>
+
+            <div class="controls">
+
+                <button>
+                    RGB LED
+                </button>
+
+                <button>
+                    3W LED
+                </button>
+
+                <button>
+                    OLED
+                </button>
+
+                <button>
+                    Joystick
+                </button>
 
             </div>
 
@@ -1074,11 +1121,13 @@ footer {
     </div>
 
 </div>
+```
+
+</div>
 
 <footer>
     AI Robot Control • WebSocket + USB
 </footer>
-
 
 <script>
 
@@ -1131,6 +1180,19 @@ const micStatus =
 
 const aiStatus =
     document.getElementById("aiStatus");
+
+
+// =====================================================
+// OLLAMA AI
+// =====================================================
+
+const OLLAMA_URL =
+    "http://localhost:11434/api/generate";
+
+const OLLAMA_MODEL =
+    "qwen2.5:3b";
+
+let aiThinking = false;
 
 
 // =====================================================
@@ -1557,6 +1619,318 @@ async function sendCommand(
         "Connect to the robot first"
     );
 }
+
+
+// =====================================================
+// AI → EYES
+// =====================================================
+
+function moveRobotEyes(
+    x,
+    y
+) {
+
+    x = Math.max(
+        -14,
+        Math.min(14, Number(x))
+    );
+
+    y = Math.max(
+        -9,
+        Math.min(9, Number(y))
+    );
+
+    sendCommand(
+        "EYES:" +
+        Math.round(x) +
+        ":" +
+        Math.round(y)
+    );
+
+}
+
+
+// =====================================================
+// AI EYE REACTION
+// =====================================================
+
+function reactWithEyes(
+    text
+) {
+
+    const lower =
+        text.toLowerCase();
+
+    if (
+        lower.includes("hello") ||
+        lower.includes("hi")
+    ) {
+
+        moveRobotEyes(
+            0,
+            -2
+        );
+
+        setTimeout(
+            () => moveRobotEyes(0, 0),
+            700
+        );
+
+        return;
+    }
+
+
+    if (
+        lower.includes("sorry") ||
+        lower.includes("sad")
+    ) {
+
+        moveRobotEyes(
+            0,
+            7
+        );
+
+        return;
+    }
+
+
+    if (
+        lower.includes("great") ||
+        lower.includes("awesome") ||
+        lower.includes("cool") ||
+        lower.includes("yes")
+    ) {
+
+        moveRobotEyes(
+            0,
+            -7
+        );
+
+        setTimeout(
+            () => moveRobotEyes(0, 0),
+            800
+        );
+
+        return;
+    }
+
+
+    const directions = [
+        [-10, 0],
+        [10, 0],
+        [-7, -3],
+        [7, -3]
+    ];
+
+    const direction =
+        directions[
+            Math.floor(
+                Math.random() *
+                directions.length
+            )
+        ];
+
+    moveRobotEyes(
+        direction[0],
+        direction[1]
+    );
+
+    setTimeout(
+        () => moveRobotEyes(0, 0),
+        900
+    );
+
+}
+
+
+// =====================================================
+// ASK OLLAMA
+// =====================================================
+
+async function askOllama(
+    question
+) {
+
+    if (aiThinking) {
+        return;
+    }
+
+    question =
+        question.trim();
+
+    if (!question) {
+        return;
+    }
+
+    aiThinking = true;
+
+    aiStatus.textContent =
+        "AI Thinking...";
+
+    addAiMessage(
+        "user",
+        question
+    );
+
+    const thinkingMessage =
+        addAiMessage(
+            "robot",
+            "Thinking..."
+        );
+
+    try {
+
+        const response =
+            await fetch(
+                OLLAMA_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        model:
+                            OLLAMA_MODEL,
+
+                        prompt:
+                            "You are the AI brain of a friendly small robot. " +
+                            "Give helpful, clear answers. " +
+                            "Keep answers reasonably concise because the robot may speak them aloud.\n\n" +
+                            "User: " +
+                            question,
+
+                        stream:
+                            false
+
+                    })
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Ollama returned HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !data.response
+        ) {
+
+            throw new Error(
+                "Ollama returned no response."
+            );
+
+        }
+
+
+        thinkingMessage.textContent =
+            data.response.trim();
+
+
+        aiStatus.textContent =
+            "AI Ready • Ollama connected";
+
+
+        reactWithEyes(
+            data.response
+        );
+
+
+        console.log(
+            "Ollama:",
+            data.response
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Ollama error:",
+            error
+        );
+
+
+        thinkingMessage.textContent =
+            "I couldn't connect to my AI brain. Make sure Ollama is running on this computer.";
+
+        aiStatus.textContent =
+            "Ollama connection error";
+
+    }
+
+    finally {
+
+        aiThinking =
+            false;
+
+    }
+
+}
+
+
+// =====================================================
+// AI INPUT
+// =====================================================
+
+const aiInput =
+    document.getElementById(
+        "aiInput"
+    );
+
+const aiSendButton =
+    document.getElementById(
+        "aiSendButton"
+    );
+
+
+aiSendButton.addEventListener(
+    "click",
+    () => {
+
+        const question =
+            aiInput.value;
+
+        aiInput.value =
+            "";
+
+        askOllama(
+            question
+        );
+
+    }
+);
+
+
+aiInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            aiSendButton.click();
+
+        }
+
+    }
+);
 
 
 // =====================================================
@@ -2356,8 +2730,10 @@ document
 
             addAiMessage(
                 "robot",
-                "The microphone is active. Real-time AI voice will be connected next."
+                "Voice control will be connected to the robot brain next. For now, type a message below."
             );
+
+            aiInput.focus();
 
         }
     );
@@ -2421,6 +2797,8 @@ function addAiMessage(
 
     chat.scrollTop =
         chat.scrollHeight;
+
+    return messageElement;
 
 }
 
