@@ -1,11 +1,50 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>AI Robot Control</title>
+
+
+<!-- MediaPipe face tracking -->
+<script type="module">
+
+window.faceTrackingReady = false;
+window.FaceDetectorClass = null;
+window.FilesetResolverClass = null;
+
+try {
+
+    const vision =
+        await import(
+            "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/+esm"
+        );
+
+    window.FaceDetectorClass = vision.FaceDetector;
+    window.FilesetResolverClass = vision.FilesetResolver;
+
+    window.faceTrackingReady = true;
+
+    console.log("MediaPipe face tracking loaded.");
+
+}
+catch(error) {
+
+    console.error(
+        "MediaPipe failed to load:",
+        error
+    );
+
+}
+
+</script>
+
 
 <style>
 
@@ -17,7 +56,7 @@ body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background: #080a0f;
-    color: #ffffff;
+    color: #fff;
 }
 
 header {
@@ -81,7 +120,7 @@ button {
     color: white;
     cursor: pointer;
     font-size: 14px;
-    transition: 0.15s;
+    transition: .15s;
 }
 
 button:hover {
@@ -89,12 +128,12 @@ button:hover {
 }
 
 button.primary {
-    background: #ffffff;
-    color: #000000;
+    background: #fff;
+    color: #000;
 }
 
 button.primary:hover {
-    background: #dddddd;
+    background: #ddd;
 }
 
 .status {
@@ -109,7 +148,8 @@ button.primary:hover {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns:
+        repeat(auto-fit, minmax(300px, 1fr));
     gap: 18px;
 }
 
@@ -194,7 +234,7 @@ input[type="range"] {
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: #ffffff;
+    background: #fff;
     left: 49px;
     top: 49px;
     cursor: grab;
@@ -217,7 +257,7 @@ input[type="range"] {
 }
 
 .switch.active {
-    background: #ffffff;
+    background: #fff;
 }
 
 .switch::after {
@@ -229,7 +269,7 @@ input[type="range"] {
     position: absolute;
     top: 3px;
     left: 4px;
-    transition: 0.15s;
+    transition: .15s;
 }
 
 .switch.active::after {
@@ -238,7 +278,8 @@ input[type="range"] {
 
 .colour-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns:
+        repeat(5, 1fr);
     gap: 7px;
 }
 
@@ -248,7 +289,7 @@ input[type="range"] {
 }
 
 .colour.white {
-    background: white;
+    background: #fff;
     border: 1px solid #777;
 }
 
@@ -269,7 +310,7 @@ input[type="range"] {
 }
 
 .disabled {
-    opacity: 0.45;
+    opacity: .45;
     cursor: default;
 }
 
@@ -279,10 +320,6 @@ footer {
     font-size: 12px;
     padding: 30px;
 }
-
-/* =====================================================
-   PAIRING
-   ===================================================== */
 
 #pairingPanel {
     display: none;
@@ -336,10 +373,6 @@ footer {
     display: none;
 }
 
-/* =====================================================
-   AI MODE
-   ===================================================== */
-
 #modeArea {
     display: none;
     margin-bottom: 20px;
@@ -375,13 +408,9 @@ footer {
 }
 
 .mode-button.active {
-    background: #ffffff;
-    color: #000000;
+    background: #fff;
+    color: #000;
 }
-
-/* =====================================================
-   AI MODE SCREEN
-   ===================================================== */
 
 #aiArea {
     display: none;
@@ -416,10 +445,6 @@ footer {
     font-size: 13px;
 }
 
-/* =====================================================
-   AI CAMERA + MICROPHONE
-   ===================================================== */
-
 .ai-hardware {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -449,7 +474,7 @@ footer {
     position: absolute;
     left: 12px;
     bottom: 12px;
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,.75);
     padding: 8px 11px;
     border-radius: 8px;
     font-size: 13px;
@@ -466,10 +491,6 @@ footer {
     text-align: center;
     color: #858b98;
 }
-
-/* =====================================================
-   AI CHAT
-   ===================================================== */
 
 .ai-chat {
     flex: 1;
@@ -491,7 +512,6 @@ footer {
     border-radius: 14px;
     font-size: 14px;
     line-height: 1.5;
-    white-space: pre-wrap;
 }
 
 .ai-message.robot {
@@ -501,8 +521,8 @@ footer {
 
 .ai-message.user {
     align-self: flex-end;
-    background: #ffffff;
-    color: #000000;
+    background: #fff;
+    color: #000;
 }
 
 .ai-input-row {
@@ -511,12 +531,11 @@ footer {
     margin-top: 18px;
 }
 
-#aiInput {
-    flex: 1;
+.ai-input-row input {
     min-width: 0;
 }
 
-#aiSendButton {
+.ai-input-row button {
     min-width: 90px;
 }
 
@@ -524,7 +543,7 @@ footer {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    margin-top: 12px;
+    margin-top: 18px;
 }
 
 .ai-talk {
@@ -542,11 +561,7 @@ footer {
     margin-top: 15px;
 }
 
-/* =====================================================
-   MOBILE
-   ===================================================== */
-
-@media (max-width: 600px) {
+@media(max-width:600px) {
 
     .container {
         padding: 15px;
@@ -589,16 +604,16 @@ footer {
         width: 100%;
     }
 
-    .ai-hardware {
-        grid-template-columns: 1fr;
-    }
-
     .ai-input-row {
         flex-direction: column;
     }
 
-    #aiSendButton {
+    .ai-input-row button {
         width: 100%;
+    }
+
+    .ai-hardware {
+        grid-template-columns: 1fr;
     }
 
 }
@@ -607,539 +622,554 @@ footer {
 
 </head>
 
+
 <body>
 
+
 <header>
-    <h1>AI Robot Control</h1>
-    <p>Wireless robot control centre</p>
+
+<h1>AI Robot Control</h1>
+
+<p>
+Wireless robot control centre
+</p>
+
 </header>
+
 
 <div class="container">
 
-```
+
 <!-- CONNECTION -->
 
 <div class="connection">
 
-    <h2>Robot Connection</h2>
+<h2>Robot Connection</h2>
 
-    <div class="connection-row">
+<div class="connection-row">
 
-        <input
-            id="ipAddress"
-            type="text"
-            value="192.168.0.243"
-            placeholder="Robot IP address"
-        >
+<input
+    id="ipAddress"
+    type="text"
+    value="192.168.0.243"
+    placeholder="Robot IP address"
+>
 
-        <button
-            class="primary"
-            id="wifiButton"
-        >
-            Connect Wi-Fi
-        </button>
+<button
+    class="primary"
+    id="wifiButton"
+>
+    Connect Wi-Fi
+</button>
 
-        <button id="usbButton">
-            Connect USB
-        </button>
+<button id="usbButton">
+    Connect USB
+</button>
 
-    </div>
+</div>
 
-    <div
-        id="status"
-        class="status"
-    >
-        Not connected
-    </div>
+<div
+    id="status"
+    class="status"
+>
+    Not connected
+</div>
 
-    <!-- PAIRING PANEL -->
 
-    <div id="pairingPanel">
+<div id="pairingPanel">
 
-        <h3>Pair Robot</h3>
+<h3>Pair Robot</h3>
 
-        <p>
-            Enter the 6-digit code shown on the robot's OLED screen.
-        </p>
+<p>
+Enter the 6-digit code shown on the robot's OLED screen.
+</p>
 
-        <div id="pairingRow">
+<div id="pairingRow">
 
-            <input
-                id="pairCode"
-                type="text"
-                inputmode="numeric"
-                maxlength="6"
-                placeholder="6-digit code"
-                autocomplete="off"
-            >
+<input
+    id="pairCode"
+    type="text"
+    inputmode="numeric"
+    maxlength="6"
+    placeholder="6-digit code"
+    autocomplete="off"
+>
 
-            <button
-                class="primary"
-                id="pairButton"
-            >
-                Pair Robot
-            </button>
+<button
+    class="primary"
+    id="pairButton"
+>
+    Pair Robot
+</button>
 
-        </div>
+</div>
 
-        <div id="pairStatus">
-            Waiting for pairing code...
-        </div>
+<div id="pairStatus">
+Waiting for pairing code...
+</div>
 
-    </div>
+</div>
 
 </div>
 
 
-<!-- MODE SELECTOR -->
+<!-- MODE -->
 
 <div id="modeArea">
 
-    <div class="mode-card">
+<div class="mode-card">
 
-        <h2>Robot Mode</h2>
+<h2>Robot Mode</h2>
 
-        <div class="mode-description">
-            Choose how you want to use your robot.
-        </div>
+<div class="mode-description">
+Choose how you want to use your robot.
+</div>
 
-        <div class="mode-buttons">
+<div class="mode-buttons">
 
-            <button
-                class="mode-button active"
-                id="controlModeButton"
-            >
-                🎮 Robot Controls
-            </button>
+<button
+    class="mode-button active"
+    id="controlModeButton"
+>
+🎮 Robot Controls
+</button>
 
-            <button
-                class="mode-button"
-                id="aiModeButton"
-            >
-                🧠 AI Mode
-            </button>
+<button
+    class="mode-button"
+    id="aiModeButton"
+>
+🧠 AI Mode
+</button>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </div>
 
 
-<!-- AI MODE -->
+<!-- AI -->
 
 <div id="aiArea">
 
-    <div class="ai-card">
+<div class="ai-card">
 
-        <div class="ai-header">
+<div class="ai-header">
 
-            <h2>🧠 AI Mode</h2>
+<h2>🧠 AI Mode</h2>
 
-            <div
-                class="ai-status"
-                id="aiStatus"
-            >
-                AI Ready
-            </div>
-
-        </div>
-
-
-        <!-- CAMERA + MICROPHONE -->
-
-        <div class="ai-hardware">
-
-            <div class="camera-box">
-
-                <video
-                    id="aiCamera"
-                    autoplay
-                    playsinline
-                    muted
-                ></video>
-
-                <div id="cameraStatus">
-                    📷 Camera starting...
-                </div>
-
-            </div>
-
-            <div
-                class="mic-status"
-                id="micStatus"
-            >
-                🎤 Microphone starting...
-            </div>
-
-        </div>
-
-
-        <!-- CHAT -->
-
-        <div
-            class="ai-chat"
-            id="aiChat"
-        >
-
-            <div class="ai-message robot">
-                Hi! I'm your robot. AI Mode is ready.
-            </div>
-
-        </div>
-
-
-        <!-- AI TEXT INPUT -->
-
-        <div class="ai-input-row">
-
-            <input
-                id="aiInput"
-                type="text"
-                placeholder="Ask your robot something..."
-                autocomplete="off"
-            >
-
-            <button
-                class="primary"
-                id="aiSendButton"
-            >
-                Send
-            </button>
-
-        </div>
-
-
-        <!-- AI CONTROLS -->
-
-        <div class="ai-controls">
-
-            <button
-                class="primary ai-talk"
-                id="talkButton"
-            >
-                🎤 Talk
-            </button>
-
-            <button
-                class="ai-camera"
-                id="cameraButton"
-            >
-                📷 Camera
-            </button>
-
-        </div>
-
-
-        <button
-            class="ai-exit"
-            id="exitAiButton"
-        >
-            ← Back to Robot Controls
-        </button>
-
-    </div>
+<div
+    class="ai-status"
+    id="aiStatus"
+>
+AI Ready
+</div>
 
 </div>
 
 
-<!-- ALL CONTROLS -->
+<!-- CAMERA + MIC -->
+
+<div class="ai-hardware">
+
+<div class="camera-box">
+
+<video
+    id="aiCamera"
+    autoplay
+    playsinline
+    muted
+></video>
+
+<div id="cameraStatus">
+📷 Camera starting...
+</div>
+
+</div>
+
+
+<div
+    class="mic-status"
+    id="micStatus"
+>
+🎤 Microphone starting...
+</div>
+
+</div>
+
+
+<!-- CHAT -->
+
+<div
+    class="ai-chat"
+    id="aiChat"
+>
+
+<div class="ai-message robot">
+Hi! I'm your robot. AI Mode is ready.
+</div>
+
+</div>
+
+
+<!-- TEXT -->
+
+<div class="ai-input-row">
+
+<input
+    id="aiInput"
+    type="text"
+    placeholder="Ask your robot something..."
+    autocomplete="off"
+>
+
+<button
+    class="primary"
+    id="aiSendButton"
+>
+Send
+</button>
+
+</div>
+
+
+<!-- BUTTONS -->
+
+<div class="ai-controls">
+
+<button
+    class="primary ai-talk"
+    id="talkButton"
+>
+🎤 Talk
+</button>
+
+<button
+    class="ai-camera"
+    id="cameraButton"
+>
+📷 Camera
+</button>
+
+</div>
+
+
+<button
+    class="ai-exit"
+    id="exitAiButton"
+>
+← Back to Robot Controls
+</button>
+
+</div>
+
+</div>
+
+
+<!-- CONTROLS -->
 
 <div id="controlsArea">
 
-    <div class="grid">
+<div class="grid">
 
-        <!-- OLED -->
 
-        <div class="card">
+<!-- OLED -->
 
-            <h2>OLED Eyes</h2>
+<div class="card">
 
-            <div class="card-description">
-                Control the robot's eyes.
-            </div>
+<h2>OLED Eyes</h2>
 
-            <div class="controls">
+<div class="card-description">
+Control the robot's eyes.
+</div>
 
-                <button id="oledOn">
-                    OLED ON
-                </button>
+<div class="controls">
 
-                <button id="oledOff">
-                    OLED OFF
-                </button>
+<button id="oledOn">
+OLED ON
+</button>
 
-                <button id="sleepButton">
-                    Sleep
-                </button>
+<button id="oledOff">
+OLED OFF
+</button>
 
-                <button id="wakeButton">
-                    Wake
-                </button>
+<button id="sleepButton">
+Sleep
+</button>
 
-            </div>
-
-            <div class="slider-row">
-
-                <label>
-                    OLED Brightness
-
-                    <span
-                        class="value"
-                        id="oledBrightnessValue"
-                    >
-                        255
-                    </span>
-
-                </label>
-
-                <input
-                    id="oledBrightness"
-                    type="range"
-                    min="0"
-                    max="255"
-                    value="255"
-                >
-
-            </div>
-
-            <div class="eye-area">
-
-                <canvas
-                    id="eyeCanvas"
-                    width="256"
-                    height="128"
-                ></canvas>
-
-            </div>
-
-            <div class="joystick-container">
-
-                <div
-                    class="joystick"
-                    id="joystick"
-                >
-
-                    <div
-                        class="stick"
-                        id="stick"
-                    ></div>
-
-                </div>
-
-            </div>
-
-            <div class="auto-row">
-
-                <span>
-                    Automatic Looking
-                </span>
-
-                <div
-                    class="switch active"
-                    id="autoSwitch"
-                ></div>
-
-            </div>
-
-        </div>
-
-
-        <!-- RGB -->
-
-        <div class="card">
-
-            <h2>RGB LED</h2>
-
-            <div class="card-description">
-                Control the built-in RGB LED.
-            </div>
-
-            <div class="controls">
-
-                <button id="rgbOn">
-                    ON
-                </button>
-
-                <button id="rgbOff">
-                    OFF
-                </button>
-
-                <button id="rainbow">
-                    Rainbow
-                </button>
-
-            </div>
-
-            <div class="slider-row">
-
-                <label>
-
-                    Brightness
-
-                    <span
-                        class="value"
-                        id="rgbBrightnessValue"
-                    >
-                        80
-                    </span>
-
-                </label>
-
-                <input
-                    id="rgbBrightness"
-                    type="range"
-                    min="0"
-                    max="255"
-                    value="80"
-                >
-
-            </div>
-
-            <div class="slider-row">
-
-                <label>
-                    Colour
-                </label>
-
-                <div class="colour-grid">
-
-                    <button
-                        class="colour white"
-                        data-colour="0"
-                    ></button>
-
-                    <button
-                        class="colour red"
-                        data-colour="1"
-                    ></button>
-
-                    <button
-                        class="colour green"
-                        data-colour="2"
-                    ></button>
-
-                    <button
-                        class="colour blue"
-                        data-colour="3"
-                    ></button>
-
-                    <button
-                        class="colour purple"
-                        data-colour="4"
-                    ></button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- 3W LED -->
-
-        <div class="card">
-
-            <h2>3W LED</h2>
-
-            <div class="card-description">
-                Control the robot's main LED.
-            </div>
-
-            <div class="controls">
-
-                <button id="ledOn">
-                    ON
-                </button>
-
-                <button id="ledOff">
-                    OFF
-                </button>
-
-            </div>
-
-            <div class="slider-row">
-
-                <label>
-
-                    Brightness
-
-                    <span
-                        class="value"
-                        id="ledBrightnessValue"
-                    >
-                        255
-                    </span>
-
-                </label>
-
-                <input
-                    id="ledBrightness"
-                    type="range"
-                    min="0"
-                    max="255"
-                    value="255"
-                >
-
-            </div>
-
-        </div>
-
-
-        <!-- HARDWARE -->
-
-        <div class="card">
-
-            <h2>Hardware</h2>
-
-            <div class="card-description">
-                Robot hardware status.
-            </div>
-
-            <div class="controls">
-
-                <button>
-                    RGB LED
-                </button>
-
-                <button>
-                    3W LED
-                </button>
-
-                <button>
-                    OLED
-                </button>
-
-                <button>
-                    Joystick
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
+<button id="wakeButton">
+Wake
+</button>
 
 </div>
-```
+
+<div class="slider-row">
+
+<label>
+
+OLED Brightness
+
+<span
+    class="value"
+    id="oledBrightnessValue"
+>
+255
+</span>
+
+</label>
+
+<input
+    id="oledBrightness"
+    type="range"
+    min="0"
+    max="255"
+    value="255"
+>
 
 </div>
+
+<div class="eye-area">
+
+<canvas
+    id="eyeCanvas"
+    width="256"
+    height="128"
+></canvas>
+
+</div>
+
+<div class="joystick-container">
+
+<div
+    class="joystick"
+    id="joystick"
+>
+
+<div
+    class="stick"
+    id="stick"
+></div>
+
+</div>
+
+</div>
+
+<div class="auto-row">
+
+<span>
+Automatic Looking
+</span>
+
+<div
+    class="switch active"
+    id="autoSwitch"
+></div>
+
+</div>
+
+</div>
+
+
+<!-- RGB -->
+
+<div class="card">
+
+<h2>RGB LED</h2>
+
+<div class="card-description">
+Control the built-in RGB LED.
+</div>
+
+<div class="controls">
+
+<button id="rgbOn">
+ON
+</button>
+
+<button id="rgbOff">
+OFF
+</button>
+
+<button id="rainbow">
+Rainbow
+</button>
+
+</div>
+
+<div class="slider-row">
+
+<label>
+
+Brightness
+
+<span
+    class="value"
+    id="rgbBrightnessValue"
+>
+80
+</span>
+
+</label>
+
+<input
+    id="rgbBrightness"
+    type="range"
+    min="0"
+    max="255"
+    value="80"
+>
+
+</div>
+
+<div class="slider-row">
+
+<label>
+Colour
+</label>
+
+<div class="colour-grid">
+
+<button
+    class="colour white"
+    data-colour="0"
+></button>
+
+<button
+    class="colour red"
+    data-colour="1"
+></button>
+
+<button
+    class="colour green"
+    data-colour="2"
+></button>
+
+<button
+    class="colour blue"
+    data-colour="3"
+></button>
+
+<button
+    class="colour purple"
+    data-colour="4"
+></button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- LED -->
+
+<div class="card">
+
+<h2>3W LED</h2>
+
+<div class="card-description">
+Control the robot's main LED.
+</div>
+
+<div class="controls">
+
+<button id="ledOn">
+ON
+</button>
+
+<button id="ledOff">
+OFF
+</button>
+
+</div>
+
+<div class="slider-row">
+
+<label>
+
+Brightness
+
+<span
+    class="value"
+    id="ledBrightnessValue"
+>
+255
+</span>
+
+</label>
+
+<input
+    id="ledBrightness"
+    type="range"
+    min="0"
+    max="255"
+    value="255"
+>
+
+</div>
+
+</div>
+
+
+<!-- HARDWARE -->
+
+<div class="card">
+
+<h2>Hardware</h2>
+
+<div class="card-description">
+Robot hardware status.
+</div>
+
+<div class="controls">
+
+<button>
+RGB LED
+</button>
+
+<button>
+3W LED
+</button>
+
+<button>
+OLED
+</button>
+
+<button>
+Joystick
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 
 <footer>
-    AI Robot Control • WebSocket + USB
+AI Robot Control • WebSocket + USB
 </footer>
+
 
 <script>
 
-// =====================================================
-// CONNECTION
-// =====================================================
+
+/* =========================================================
+   CONNECTION
+========================================================= */
 
 let socket = null;
+
 let serialPort = null;
+
 let serialWriter = null;
 
 let paired = false;
+
 
 const statusElement =
     document.getElementById("status");
@@ -1163,60 +1193,78 @@ const pairStatus =
     document.getElementById("pairStatus");
 
 
-// =====================================================
-// AI MEDIA
-// =====================================================
-
-let aiMediaStream = null;
-
-const aiCamera =
-    document.getElementById("aiCamera");
-
-const cameraStatus =
-    document.getElementById("cameraStatus");
-
-const micStatus =
-    document.getElementById("micStatus");
-
-const aiStatus =
-    document.getElementById("aiStatus");
-
-
-// =====================================================
-// OLLAMA AI
-// =====================================================
-
-const OLLAMA_URL =
-    "http://localhost:11434/api/generate";
-
-const OLLAMA_MODEL =
-    "qwen2.5:3b";
-
-let aiThinking = false;
-
-
-// =====================================================
-// STATUS
-// =====================================================
-
 function setStatus(
     message,
     connected = false
 ) {
 
-    statusElement.textContent =
-        message;
+    statusElement.textContent = message;
 
     statusElement.classList.toggle(
         "connected",
         connected
     );
+
 }
 
 
-// =====================================================
-// PAIRING UI
-// =====================================================
+/* =========================================================
+   AI VARIABLES
+========================================================= */
+
+let aiMediaStream = null;
+
+let aiCamera =
+    document.getElementById("aiCamera");
+
+let cameraStatus =
+    document.getElementById("cameraStatus");
+
+let micStatus =
+    document.getElementById("micStatus");
+
+let aiStatus =
+    document.getElementById("aiStatus");
+
+let aiMediaReady = false;
+
+let faceDetector = null;
+
+let faceTrackingRunning = false;
+
+let faceTrackingFrame = null;
+
+let lastFaceDetection = 0;
+
+let lastEyeCommand = 0;
+
+let smoothedFaceX = 0;
+
+let smoothedFaceY = 0;
+
+let recognition = null;
+
+let listening = false;
+
+let aiThinking = false;
+
+let aiEyeTimer = null;
+
+
+/* =========================================================
+   OLLAMA
+========================================================= */
+
+const OLLAMA_URL =
+    "http://localhost:11434/api/chat";
+
+const OLLAMA_MODEL =
+    "qwen2.5:3b";
+
+
+/* =========================================================
+   PAIRING
+========================================================= */
 
 function showPairing() {
 
@@ -1224,20 +1272,15 @@ function showPairing() {
 
     paired = false;
 
-    pairingPanel.style.display =
-        "block";
+    pairingPanel.style.display = "block";
 
-    controlsArea.style.display =
-        "none";
+    controlsArea.style.display = "none";
 
-    modeArea.style.display =
-        "none";
+    modeArea.style.display = "none";
 
-    aiArea.style.display =
-        "none";
+    aiArea.style.display = "none";
 
-    pairCode.value =
-        "";
+    pairCode.value = "";
 
     pairStatus.textContent =
         "Enter the code shown on the robot.";
@@ -1251,20 +1294,13 @@ function showControls() {
 
     paired = true;
 
-    pairingPanel.style.display =
-        "none";
+    pairingPanel.style.display = "none";
 
-    controlsArea.style.display =
-        "block";
+    controlsArea.style.display = "block";
 
-    modeArea.style.display =
-        "block";
+    modeArea.style.display = "block";
 
-    aiArea.style.display =
-        "none";
-
-    pairStatus.textContent =
-        "";
+    aiArea.style.display = "none";
 
 }
 
@@ -1276,8 +1312,7 @@ function pairingFailed() {
     pairStatus.textContent =
         "Incorrect code. Try again.";
 
-    pairStatus.className =
-        "error";
+    pairStatus.className = "error";
 
     pairCode.select();
 
@@ -1288,17 +1323,13 @@ function pairingSucceeded() {
 
     paired = true;
 
-    pairingPanel.style.display =
-        "none";
+    pairingPanel.style.display = "none";
 
-    controlsArea.style.display =
-        "block";
+    controlsArea.style.display = "block";
 
-    modeArea.style.display =
-        "block";
+    modeArea.style.display = "block";
 
-    aiArea.style.display =
-        "none";
+    aiArea.style.display = "none";
 
     setStatus(
         "Robot paired via Wi-Fi",
@@ -1308,9 +1339,9 @@ function pairingSucceeded() {
 }
 
 
-// =====================================================
-// MODE SWITCHING
-// =====================================================
+/* =========================================================
+   MODE
+========================================================= */
 
 const controlModeButton =
     document.getElementById(
@@ -1358,6 +1389,7 @@ async function showAiMode() {
         );
 
         return;
+
     }
 
     controlsArea.style.display =
@@ -1384,12 +1416,10 @@ controlModeButton.addEventListener(
     showControlMode
 );
 
-
 aiModeButton.addEventListener(
     "click",
     showAiMode
 );
-
 
 exitAiButton.addEventListener(
     "click",
@@ -1397,15 +1427,20 @@ exitAiButton.addEventListener(
 );
 
 
-// =====================================================
-// START CAMERA + MICROPHONE
-// =====================================================
+/* =========================================================
+   CAMERA + MICROPHONE
+========================================================= */
 
 async function startAIMedia() {
 
     if (aiMediaStream) {
+
+        startFaceTracking();
+
         return;
+
     }
+
 
     cameraStatus.textContent =
         "📷 Requesting camera...";
@@ -1416,6 +1451,7 @@ async function startAIMedia() {
     aiStatus.textContent =
         "Requesting camera + microphone...";
 
+
     try {
 
         if (
@@ -1424,17 +1460,21 @@ async function startAIMedia() {
         ) {
 
             throw new Error(
-                "Camera and microphone access is not supported by this browser."
+                "Camera and microphone are not supported."
             );
 
         }
 
+
         aiMediaStream =
             await navigator.mediaDevices.getUserMedia({
+
                 video: {
                     facingMode: "user"
                 },
+
                 audio: true
+
             });
 
 
@@ -1452,21 +1492,31 @@ async function startAIMedia() {
             "AI Ready • Camera + microphone active";
 
 
-        console.log(
-            "AI camera and microphone started"
-        );
+        aiMediaReady = true;
+
+
+        await aiCamera.play();
+
+
+        startFaceTracking();
+
+
+        setupSpeechRecognition();
+
 
     }
-
-    catch (error) {
+    catch(error) {
 
         console.error(
             "AI media error:",
             error
         );
 
-        aiMediaStream =
-            null;
+
+        aiMediaStream = null;
+
+        aiMediaReady = false;
+
 
         cameraStatus.textContent =
             "📷 Camera unavailable";
@@ -1476,6 +1526,7 @@ async function startAIMedia() {
 
         aiStatus.textContent =
             "Camera/microphone permission needed";
+
 
         addAiMessage(
             "robot",
@@ -1487,11 +1538,18 @@ async function startAIMedia() {
 }
 
 
-// =====================================================
-// STOP CAMERA + MICROPHONE
-// =====================================================
+/* =========================================================
+   STOP MEDIA
+========================================================= */
 
 function stopAIMedia() {
+
+    stopFaceTracking();
+
+    stopListening();
+
+    stopAIEyeThinking();
+
 
     if (!aiMediaStream) {
 
@@ -1509,18 +1567,15 @@ function stopAIMedia() {
     aiMediaStream
         .getTracks()
         .forEach(
-            track => {
-                track.stop();
-            }
+            track => track.stop()
         );
 
 
-    aiMediaStream =
-        null;
+    aiMediaStream = null;
 
+    aiMediaReady = false;
 
-    aiCamera.srcObject =
-        null;
+    aiCamera.srcObject = null;
 
 
     cameraStatus.textContent =
@@ -1535,21 +1590,474 @@ function stopAIMedia() {
 }
 
 
-// =====================================================
-// SEND COMMAND
-// =====================================================
+/* =========================================================
+   MEDIAPIPE FACE DETECTOR
+========================================================= */
+
+async function initialiseFaceDetector() {
+
+    if (faceDetector) {
+
+        return true;
+
+    }
+
+
+    if (!window.faceTrackingReady) {
+
+        cameraStatus.textContent =
+            "📷 Camera active • Loading face tracking...";
+
+        return false;
+
+    }
+
+
+    try {
+
+        const vision =
+            await window.FilesetResolverClass.forVisionTasks(
+
+                "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/wasm"
+
+            );
+
+
+        faceDetector =
+            await window.FaceDetectorClass.createFromOptions(
+
+                vision,
+
+                {
+
+                    baseOptions: {
+
+                        modelAssetPath:
+                            "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite"
+
+                    },
+
+                    runningMode: "VIDEO",
+
+                    minDetectionConfidence: 0.5
+
+                }
+
+            );
+
+
+        console.log(
+            "Face detector ready."
+        );
+
+
+        return true;
+
+    }
+    catch(error) {
+
+        console.error(
+            "Face detector error:",
+            error
+        );
+
+
+        cameraStatus.textContent =
+            "📷 Camera active • Face tracking unavailable";
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   FACE TRACKING
+========================================================= */
+
+async function startFaceTracking() {
+
+    if (faceTrackingRunning) {
+
+        return;
+
+    }
+
+
+    const ready =
+        await initialiseFaceDetector();
+
+
+    if (!ready) {
+
+        return;
+
+    }
+
+
+    faceTrackingRunning = true;
+
+
+    cameraStatus.textContent =
+        "📷 Camera active • Looking for you";
+
+
+    function trackFrame(timestamp) {
+
+        if (
+            !faceTrackingRunning ||
+            !aiCamera.srcObject
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+          Don't run the detector on every single
+          screen refresh. About 12 FPS is enough
+          for smooth eye movement.
+        */
+
+        if (
+            timestamp - lastFaceDetection >= 80 &&
+            aiCamera.readyState >= 2
+        ) {
+
+            lastFaceDetection = timestamp;
+
+            try {
+
+                const results =
+                    faceDetector.detectForVideo(
+                        aiCamera,
+                        timestamp
+                    );
+
+
+                if (
+                    results &&
+                    results.detections &&
+                    results.detections.length > 0
+                ) {
+
+                    const face =
+                        results.detections[0];
+
+                    const box =
+                        face.boundingBox;
+
+
+                    const faceCentreX =
+                        box.originX +
+                        box.width / 2;
+
+
+                    const faceCentreY =
+                        box.originY +
+                        box.height / 2;
+
+
+                    const videoWidth =
+                        aiCamera.videoWidth;
+
+                    const videoHeight =
+                        aiCamera.videoHeight;
+
+
+                    if (
+                        videoWidth > 0 &&
+                        videoHeight > 0
+                    ) {
+
+                        /*
+                          Convert face position to
+                          -1 ... +1.
+                        */
+
+                        let normalX =
+                            (faceCentreX /
+                            videoWidth) - 0.5;
+
+
+                        let normalY =
+                            (faceCentreY /
+                            videoHeight) - 0.5;
+
+
+                        /*
+                          Smooth movement so the eyes
+                          don't shake around.
+                        */
+
+                        smoothedFaceX =
+                            smoothedFaceX * 0.75 +
+                            normalX * 0.25;
+
+
+                        smoothedFaceY =
+                            smoothedFaceY * 0.75 +
+                            normalY * 0.25;
+
+
+                        /*
+                          Convert to your existing
+                          eye limits:
+                          X = -14 ... +14
+                          Y = -9 ... +9
+                        */
+
+                        const eyeX =
+                            Math.max(
+                                -14,
+                                Math.min(
+                                    14,
+                                    Math.round(
+                                        smoothedFaceX * 28
+                                    )
+                                )
+                            );
+
+
+                        const eyeY =
+                            Math.max(
+                                -9,
+                                Math.min(
+                                    9,
+                                    Math.round(
+                                        smoothedFaceY * 18
+                                    )
+                                )
+                            );
+
+
+                        /*
+                          Only send a new command
+                          when necessary.
+                        */
+
+                        const now =
+                            performance.now();
+
+
+                        if (
+                            now - lastEyeCommand > 90 &&
+                            autoSwitch.classList.contains("active")
+                        ) {
+
+                            lastEyeCommand =
+                                now;
+
+
+                            sendCommand(
+                                "EYES:" +
+                                eyeX +
+                                ":" +
+                                eyeY
+                            );
+
+                        }
+
+
+                        cameraStatus.textContent =
+                            "📷 Camera active • 👀 Following you";
+
+                    }
+
+                }
+                else {
+
+                    cameraStatus.textContent =
+                        "📷 Camera active • Looking for you";
+
+                }
+
+            }
+            catch(error) {
+
+                console.error(
+                    "Face detection error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        faceTrackingFrame =
+            requestAnimationFrame(
+                trackFrame
+            );
+
+    }
+
+
+    faceTrackingFrame =
+        requestAnimationFrame(
+            trackFrame
+        );
+
+}
+
+
+/* =========================================================
+   STOP FACE TRACKING
+========================================================= */
+
+function stopFaceTracking() {
+
+    faceTrackingRunning = false;
+
+
+    if (faceTrackingFrame) {
+
+        cancelAnimationFrame(
+            faceTrackingFrame
+        );
+
+        faceTrackingFrame = null;
+
+    }
+
+}
+
+
+/* =========================================================
+   ROBOT EYE THINKING
+========================================================= */
+
+function startAIEyeThinking() {
+
+    if (
+        !autoSwitch.classList.contains(
+            "active"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    stopAIEyeThinking();
+
+
+    aiThinking = true;
+
+
+    function lookAround() {
+
+        if (!aiThinking) {
+
+            return;
+
+        }
+
+
+        if (
+            !autoSwitch.classList.contains(
+                "active"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        const x =
+            Math.floor(
+                Math.random() * 21
+            ) - 10;
+
+
+        const y =
+            Math.floor(
+                Math.random() * 13
+            ) - 6;
+
+
+        sendCommand(
+            "EYES:" +
+            x +
+            ":" +
+            y
+        );
+
+    }
+
+
+    lookAround();
+
+
+    aiEyeTimer =
+        setInterval(
+            lookAround,
+            700
+        );
+
+}
+
+
+function stopAIEyeThinking() {
+
+    aiThinking = false;
+
+
+    if (aiEyeTimer) {
+
+        clearInterval(
+            aiEyeTimer
+        );
+
+        aiEyeTimer = null;
+
+    }
+
+
+    /*
+      Return control to the robot's
+      normal autonomous eye system.
+    */
+
+    if (
+        paired &&
+        autoSwitch.classList.contains(
+            "active"
+        )
+    ) {
+
+        sendCommand(
+            "EYES:AUTO"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SEND COMMAND TO ROBOT
+========================================================= */
 
 async function sendCommand(
     command
 ) {
 
     if (
-        command.startsWith("PAIR:")
+        command.startsWith(
+            "PAIR:"
+        )
     ) {
 
         if (
             socket &&
-            socket.readyState === WebSocket.OPEN
+            socket.readyState ===
+            WebSocket.OPEN
         ) {
 
             socket.send(command);
@@ -1560,13 +2068,16 @@ async function sendCommand(
             );
 
             return;
+
         }
+
 
         setStatus(
             "Connect to the robot first"
         );
 
         return;
+
     }
 
 
@@ -1577,12 +2088,14 @@ async function sendCommand(
         );
 
         return;
+
     }
 
 
     if (
         socket &&
-        socket.readyState === WebSocket.OPEN
+        socket.readyState ===
+        WebSocket.OPEN
     ) {
 
         socket.send(command);
@@ -1593,18 +2106,19 @@ async function sendCommand(
         );
 
         return;
+
     }
 
 
-    if (
-        serialWriter
-    ) {
+    if (serialWriter) {
 
         const data =
             command + "\n";
 
         await serialWriter.write(
-            new TextEncoder().encode(data)
+            new TextEncoder().encode(
+                data
+            )
         );
 
         console.log(
@@ -1613,379 +2127,76 @@ async function sendCommand(
         );
 
         return;
+
     }
+
 
     setStatus(
         "Connect to the robot first"
     );
-}
-
-
-// =====================================================
-// AI → EYES
-// =====================================================
-
-function moveRobotEyes(
-    x,
-    y
-) {
-
-    x = Math.max(
-        -14,
-        Math.min(14, Number(x))
-    );
-
-    y = Math.max(
-        -9,
-        Math.min(9, Number(y))
-    );
-
-    sendCommand(
-        "EYES:" +
-        Math.round(x) +
-        ":" +
-        Math.round(y)
-    );
 
 }
 
 
-// =====================================================
-// AI EYE REACTION
-// =====================================================
-
-function reactWithEyes(
-    text
-) {
-
-    const lower =
-        text.toLowerCase();
-
-    if (
-        lower.includes("hello") ||
-        lower.includes("hi")
-    ) {
-
-        moveRobotEyes(
-            0,
-            -2
-        );
-
-        setTimeout(
-            () => moveRobotEyes(0, 0),
-            700
-        );
-
-        return;
-    }
-
-
-    if (
-        lower.includes("sorry") ||
-        lower.includes("sad")
-    ) {
-
-        moveRobotEyes(
-            0,
-            7
-        );
-
-        return;
-    }
-
-
-    if (
-        lower.includes("great") ||
-        lower.includes("awesome") ||
-        lower.includes("cool") ||
-        lower.includes("yes")
-    ) {
-
-        moveRobotEyes(
-            0,
-            -7
-        );
-
-        setTimeout(
-            () => moveRobotEyes(0, 0),
-            800
-        );
-
-        return;
-    }
-
-
-    const directions = [
-        [-10, 0],
-        [10, 0],
-        [-7, -3],
-        [7, -3]
-    ];
-
-    const direction =
-        directions[
-            Math.floor(
-                Math.random() *
-                directions.length
-            )
-        ];
-
-    moveRobotEyes(
-        direction[0],
-        direction[1]
-    );
-
-    setTimeout(
-        () => moveRobotEyes(0, 0),
-        900
-    );
-
-}
-
-
-// =====================================================
-// ASK OLLAMA
-// =====================================================
-
-async function askOllama(
-    question
-) {
-
-    if (aiThinking) {
-        return;
-    }
-
-    question =
-        question.trim();
-
-    if (!question) {
-        return;
-    }
-
-    aiThinking = true;
-
-    aiStatus.textContent =
-        "AI Thinking...";
-
-    addAiMessage(
-        "user",
-        question
-    );
-
-    const thinkingMessage =
-        addAiMessage(
-            "robot",
-            "Thinking..."
-        );
-
-    try {
-
-        const response =
-            await fetch(
-                OLLAMA_URL,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-
-                        model:
-                            OLLAMA_MODEL,
-
-                        prompt:
-                            "You are the AI brain of a friendly small robot. " +
-                            "Give helpful, clear answers. " +
-                            "Keep answers reasonably concise because the robot may speak them aloud.\n\n" +
-                            "User: " +
-                            question,
-
-                        stream:
-                            false
-
-                    })
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Ollama returned HTTP " +
-                response.status
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !data.response
-        ) {
-
-            throw new Error(
-                "Ollama returned no response."
-            );
-
-        }
-
-
-        thinkingMessage.textContent =
-            data.response.trim();
-
-
-        aiStatus.textContent =
-            "AI Ready • Ollama connected";
-
-
-        reactWithEyes(
-            data.response
-        );
-
-
-        console.log(
-            "Ollama:",
-            data.response
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Ollama error:",
-            error
-        );
-
-
-        thinkingMessage.textContent =
-            "I couldn't connect to my AI brain. Make sure Ollama is running on this computer.";
-
-        aiStatus.textContent =
-            "Ollama connection error";
-
-    }
-
-    finally {
-
-        aiThinking =
-            false;
-
-    }
-
-}
-
-
-// =====================================================
-// AI INPUT
-// =====================================================
-
-const aiInput =
-    document.getElementById(
-        "aiInput"
-    );
-
-const aiSendButton =
-    document.getElementById(
-        "aiSendButton"
-    );
-
-
-aiSendButton.addEventListener(
+/* =========================================================
+   PAIR BUTTON
+========================================================= */
+
+document
+.getElementById("pairButton")
+.addEventListener(
     "click",
     () => {
 
-        const question =
-            aiInput.value;
+        const code =
+            pairCode.value.trim();
 
-        aiInput.value =
+
+        if (
+            !/^\d{6}$/.test(
+                code
+            )
+        ) {
+
+            pairStatus.textContent =
+                "Enter the 6-digit code from the OLED.";
+
+            pairStatus.className =
+                "error";
+
+            return;
+
+        }
+
+
+        pairStatus.textContent =
+            "Checking code...";
+
+        pairStatus.className =
             "";
 
-        askOllama(
-            question
+
+        sendCommand(
+            "PAIR:" + code
         );
 
     }
 );
 
-
-aiInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            event.preventDefault();
-
-            aiSendButton.click();
-
-        }
-
-    }
-);
-
-
-// =====================================================
-// PAIR BUTTON
-// =====================================================
-
-document
-    .getElementById("pairButton")
-    .addEventListener(
-        "click",
-        () => {
-
-            const code =
-                pairCode.value.trim();
-
-            if (
-                !/^\d{6}$/.test(code)
-            ) {
-
-                pairStatus.textContent =
-                    "Enter the 6-digit code from the OLED.";
-
-                pairStatus.className =
-                    "error";
-
-                return;
-            }
-
-            pairStatus.textContent =
-                "Checking code...";
-
-            pairStatus.className = "";
-
-            sendCommand(
-                "PAIR:" + code
-            );
-
-        }
-    );
-
-
-// =====================================================
-// ENTER KEY FOR PAIRING
-// =====================================================
 
 pairCode.addEventListener(
     "keydown",
     event => {
 
         if (
-            event.key === "Enter"
+            event.key ===
+            "Enter"
         ) {
 
             document
-                .getElementById("pairButton")
+                .getElementById(
+                    "pairButton"
+                )
                 .click();
 
         }
@@ -1994,318 +2205,335 @@ pairCode.addEventListener(
 );
 
 
-// =====================================================
-// WIFI CONNECTION
-// =====================================================
+/* =========================================================
+   WIFI
+========================================================= */
 
 document
-    .getElementById("wifiButton")
-    .addEventListener(
-        "click",
-        () => {
+.getElementById("wifiButton")
+.addEventListener(
+    "click",
+    () => {
 
-            const ip =
-                document
-                    .getElementById("ipAddress")
-                    .value
-                    .trim();
+        const ip =
+            document
+            .getElementById(
+                "ipAddress"
+            )
+            .value
+            .trim();
 
-            if (!ip) {
 
-                setStatus(
-                    "Enter the robot IP address"
-                );
-
-                return;
-            }
-
-            if (socket) {
-
-                socket.close();
-
-            }
-
-            stopAIMedia();
-
-            paired =
-                false;
-
-            controlsArea.style.display =
-                "none";
-
-            modeArea.style.display =
-                "none";
-
-            aiArea.style.display =
-                "none";
-
-            pairingPanel.style.display =
-                "none";
+        if (!ip) {
 
             setStatus(
-                "Connecting to robot..."
+                "Enter the robot IP address"
             );
 
-            socket =
-                new WebSocket(
-                    "ws://" + ip + ":81"
-                );
-
-
-            socket.onopen =
-                () => {
-
-                    setStatus(
-                        "Connected — waiting for pairing",
-                        true
-                    );
-
-                    console.log(
-                        "Wi-Fi connected"
-                    );
-
-                    showPairing();
-
-                };
-
-
-            socket.onmessage =
-                event => {
-
-                    console.log(
-                        "Robot:",
-                        event.data
-                    );
-
-
-                    if (
-                        event.data ===
-                        "PAIR_REQUIRED"
-                    ) {
-
-                        showPairing();
-
-                        return;
-                    }
-
-
-                    if (
-                        event.data ===
-                        "PAIR_OK"
-                    ) {
-
-                        pairingSucceeded();
-
-                        return;
-                    }
-
-
-                    if (
-                        event.data ===
-                        "PAIR_FAILED"
-                    ) {
-
-                        pairingFailed();
-
-                        return;
-                    }
-
-                };
-
-
-            socket.onerror =
-                error => {
-
-                    console.error(
-                        error
-                    );
-
-                    stopAIMedia();
-
-                    paired =
-                        false;
-
-                    pairingPanel.style.display =
-                        "none";
-
-                    controlsArea.style.display =
-                        "none";
-
-                    modeArea.style.display =
-                        "none";
-
-                    aiArea.style.display =
-                        "none";
-
-                    setStatus(
-                        "Wi-Fi connection failed"
-                    );
-
-                };
-
-
-            socket.onclose =
-                () => {
-
-                    stopAIMedia();
-
-                    paired =
-                        false;
-
-                    pairingPanel.style.display =
-                        "none";
-
-                    controlsArea.style.display =
-                        "none";
-
-                    modeArea.style.display =
-                        "none";
-
-                    aiArea.style.display =
-                        "none";
-
-                    setStatus(
-                        "Wi-Fi disconnected"
-                    );
-
-                };
+            return;
 
         }
-    );
 
 
-// =====================================================
-// USB CONNECTION
-// =====================================================
+        if (socket) {
 
-document
-    .getElementById("usbButton")
-    .addEventListener(
-        "click",
-        async () => {
+            socket.close();
 
-            if (
-                !("serial" in navigator)
-            ) {
+        }
 
-                setStatus(
-                    "Web Serial is not supported by this browser"
-                );
 
-                return;
-            }
+        stopAIMedia();
 
-            try {
 
-                serialPort =
-                    await navigator
-                        .serial
-                        .requestPort();
+        paired = false;
 
-                await serialPort.open({
-                    baudRate: 115200
-                });
+        controlsArea.style.display =
+            "none";
 
-                serialWriter =
-                    serialPort.writable.getWriter();
+        modeArea.style.display =
+            "none";
 
-                paired =
-                    true;
+        aiArea.style.display =
+            "none";
 
-                pairingPanel.style.display =
-                    "none";
+        pairingPanel.style.display =
+            "none";
 
-                controlsArea.style.display =
-                    "block";
 
-                modeArea.style.display =
-                    "block";
+        setStatus(
+            "Connecting to robot..."
+        );
 
-                aiArea.style.display =
-                    "none";
+
+        socket =
+            new WebSocket(
+                "ws://" +
+                ip +
+                ":81"
+            );
+
+
+        socket.onopen =
+            () => {
 
                 setStatus(
-                    "Connected via USB",
+                    "Connected — waiting for pairing",
                     true
                 );
 
-            }
+                console.log(
+                    "Wi-Fi connected"
+                );
 
-            catch (error) {
+                showPairing();
+
+            };
+
+
+        socket.onmessage =
+            event => {
+
+                console.log(
+                    "Robot:",
+                    event.data
+                );
+
+
+                if (
+                    event.data ===
+                    "PAIR_REQUIRED"
+                ) {
+
+                    showPairing();
+
+                    return;
+
+                }
+
+
+                if (
+                    event.data ===
+                    "PAIR_OK"
+                ) {
+
+                    pairingSucceeded();
+
+                    return;
+
+                }
+
+
+                if (
+                    event.data ===
+                    "PAIR_FAILED"
+                ) {
+
+                    pairingFailed();
+
+                    return;
+
+                }
+
+            };
+
+
+        socket.onerror =
+            error => {
 
                 console.error(
                     error
                 );
 
+
+                stopAIMedia();
+
+                paired = false;
+
+                pairingPanel.style.display =
+                    "none";
+
+                controlsArea.style.display =
+                    "none";
+
+                modeArea.style.display =
+                    "none";
+
+                aiArea.style.display =
+                    "none";
+
+
                 setStatus(
-                    "USB connection failed"
+                    "Wi-Fi connection failed"
                 );
 
-            }
+            };
+
+
+        socket.onclose =
+            () => {
+
+                stopAIMedia();
+
+                paired = false;
+
+                pairingPanel.style.display =
+                    "none";
+
+                controlsArea.style.display =
+                    "none";
+
+                modeArea.style.display =
+                    "none";
+
+                aiArea.style.display =
+                    "none";
+
+
+                setStatus(
+                    "Wi-Fi disconnected"
+                );
+
+            };
+
+    }
+);
+
+
+/* =========================================================
+   USB
+========================================================= */
+
+document
+.getElementById("usbButton")
+.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            !("serial" in navigator)
+        ) {
+
+            setStatus(
+                "Web Serial is not supported by this browser"
+            );
+
+            return;
 
         }
-    );
 
 
-// =====================================================
-// OLED
-// =====================================================
+        try {
+
+            serialPort =
+                await navigator.serial.requestPort();
+
+
+            await serialPort.open({
+                baudRate: 115200
+            });
+
+
+            serialWriter =
+                serialPort.writable.getWriter();
+
+
+            paired = true;
+
+
+            pairingPanel.style.display =
+                "none";
+
+            controlsArea.style.display =
+                "block";
+
+            modeArea.style.display =
+                "block";
+
+            aiArea.style.display =
+                "none";
+
+
+            setStatus(
+                "Connected via USB",
+                true
+            );
+
+        }
+        catch(error) {
+
+            console.error(
+                error
+            );
+
+            setStatus(
+                "USB connection failed"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   OLED
+========================================================= */
 
 document
-    .getElementById("oledOn")
-    .addEventListener(
-        "click",
-        () => sendCommand(
+.getElementById("oledOn")
+.addEventListener(
+    "click",
+    () =>
+        sendCommand(
             "OLED:ON"
         )
-    );
+);
+
 
 document
-    .getElementById("oledOff")
-    .addEventListener(
-        "click",
-        () => sendCommand(
+.getElementById("oledOff")
+.addEventListener(
+    "click",
+    () =>
+        sendCommand(
             "OLED:OFF"
         )
-    );
+);
 
-
-// =====================================================
-// SLEEP / WAKE
-// =====================================================
 
 document
-    .getElementById("sleepButton")
-    .addEventListener(
-        "click",
-        () => sendCommand(
+.getElementById("sleepButton")
+.addEventListener(
+    "click",
+    () =>
+        sendCommand(
             "SLEEP"
         )
-    );
+);
+
 
 document
-    .getElementById("wakeButton")
-    .addEventListener(
-        "click",
-        () => sendCommand(
+.getElementById("wakeButton")
+.addEventListener(
+    "click",
+    () =>
+        sendCommand(
             "WAKE"
         )
-    );
+);
 
-
-// =====================================================
-// OLED BRIGHTNESS
-// =====================================================
 
 const oledBrightness =
     document.getElementById(
         "oledBrightness"
     );
 
+
 const oledBrightnessValue =
     document.getElementById(
         "oledBrightnessValue"
     );
+
 
 oledBrightness.addEventListener(
     "input",
@@ -2314,62 +2542,68 @@ oledBrightness.addEventListener(
         const value =
             oledBrightness.value;
 
+
         oledBrightnessValue.textContent =
             value;
 
+
         sendCommand(
-            "OLED_BRIGHTNESS:" + value
+            "OLED_BRIGHTNESS:" +
+            value
         );
 
     }
 );
 
 
-// =====================================================
-// RGB
-// =====================================================
+/* =========================================================
+   RGB
+========================================================= */
 
 document
-    .getElementById("rgbOn")
-    .addEventListener(
-        "click",
-        () => sendCommand(
+.getElementById("rgbOn")
+.addEventListener(
+    "click",
+    () =>
+        sendCommand(
             "RGB_ON"
         )
-    );
+);
+
 
 document
-    .getElementById("rgbOff")
-    .addEventListener(
-        "click",
-        () => sendCommand(
+.getElementById("rgbOff")
+.addEventListener(
+    "click",
+    () =>
+        sendCommand(
             "RGB_OFF"
         )
-    );
+);
+
 
 document
-    .getElementById("rainbow")
-    .addEventListener(
-        "click",
-        () => sendCommand(
+.getElementById("rainbow")
+.addEventListener(
+    "click",
+    () =>
+        sendCommand(
             "RAINBOW"
         )
-    );
+);
 
-
-// =====================================================
-// RGB BRIGHTNESS
-// =====================================================
 
 const rgbBrightness =
     document.getElementById(
         "rgbBrightness"
     );
 
+
 const rgbBrightnessValue =
     document.getElementById(
         "rgbBrightnessValue"
     );
+
 
 rgbBrightness.addEventListener(
     "input",
@@ -2378,80 +2612,77 @@ rgbBrightness.addEventListener(
         const value =
             rgbBrightness.value;
 
+
         rgbBrightnessValue.textContent =
             value;
 
+
         sendCommand(
-            "BRIGHTNESS:" + value
+            "BRIGHTNESS:" +
+            value
         );
 
     }
 );
 
 
-// =====================================================
-// RGB COLOURS
-// =====================================================
+document
+.querySelectorAll(
+    "[data-colour]"
+)
+.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () =>
+                sendCommand(
+                    "COLOUR:" +
+                    button.dataset.colour
+                )
+        );
+
+    }
+);
+
+
+/* =========================================================
+   3W LED
+========================================================= */
 
 document
-    .querySelectorAll(
-        "[data-colour]"
-    )
-    .forEach(
-        button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    sendCommand(
-                        "COLOUR:" +
-                        button.dataset.colour
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-// =====================================================
-// 3W LED
-// =====================================================
-
-document
-    .getElementById("ledOn")
-    .addEventListener(
-        "click",
-        () => sendCommand(
+.getElementById("ledOn")
+.addEventListener(
+    "click",
+    () =>
+        sendCommand(
             "ON"
         )
-    );
+);
+
 
 document
-    .getElementById("ledOff")
-    .addEventListener(
-        "click",
-        () => sendCommand(
+.getElementById("ledOff")
+.addEventListener(
+    "click",
+    () =>
+        sendCommand(
             "OFF"
         )
-    );
+);
 
-
-// =====================================================
-// 3W LED BRIGHTNESS
-// =====================================================
 
 const ledBrightness =
     document.getElementById(
         "ledBrightness"
     );
 
+
 const ledBrightnessValue =
     document.getElementById(
         "ledBrightnessValue"
     );
+
 
 ledBrightness.addEventListener(
     "input",
@@ -2460,36 +2691,45 @@ ledBrightness.addEventListener(
         const value =
             ledBrightness.value;
 
+
         ledBrightnessValue.textContent =
             value;
 
+
         sendCommand(
-            "LED_BRIGHTNESS:" + value
+            "LED_BRIGHTNESS:" +
+            value
         );
 
     }
 );
 
 
-// =====================================================
-// EYE CANVAS
-// =====================================================
+/* =========================================================
+   EYE PREVIEW
+========================================================= */
 
 const canvas =
     document.getElementById(
         "eyeCanvas"
     );
 
+
 const ctx =
-    canvas.getContext("2d");
+    canvas.getContext(
+        "2d"
+    );
+
 
 let previewX = 0;
+
 let previewY = 0;
+
 
 function drawPreview() {
 
     ctx.fillStyle =
-        "#000000";
+        "#000";
 
     ctx.fillRect(
         0,
@@ -2498,8 +2738,10 @@ function drawPreview() {
         canvas.height
     );
 
+
     ctx.fillStyle =
-        "#ffffff";
+        "#fff";
+
 
     ctx.beginPath();
 
@@ -2512,6 +2754,7 @@ function drawPreview() {
     );
 
     ctx.fill();
+
 
     ctx.beginPath();
 
@@ -2527,25 +2770,28 @@ function drawPreview() {
 
 }
 
+
 drawPreview();
 
 
-// =====================================================
-// VIRTUAL JOYSTICK
-// =====================================================
+/* =========================================================
+   JOYSTICK
+========================================================= */
 
 const joystick =
     document.getElementById(
         "joystick"
     );
 
+
 const stick =
     document.getElementById(
         "stick"
     );
 
-let dragging =
-    false;
+
+let dragging = false;
+
 
 function updateJoystick(
     clientX,
@@ -2555,24 +2801,29 @@ function updateJoystick(
     const rect =
         joystick.getBoundingClientRect();
 
+
     const centreX =
         rect.left +
         rect.width / 2;
+
 
     const centreY =
         rect.top +
         rect.height / 2;
 
+
     let x =
         clientX -
         centreX;
+
 
     let y =
         clientY -
         centreY;
 
-    const max =
-        48;
+
+    const max = 48;
+
 
     const distance =
         Math.sqrt(
@@ -2580,41 +2831,60 @@ function updateJoystick(
             y * y
         );
 
+
     if (
         distance > max
     ) {
 
         x =
-            x / distance * max;
+            x /
+            distance *
+            max;
 
         y =
-            y / distance * max;
+            y /
+            distance *
+            max;
 
     }
 
+
     stick.style.left =
-        (49 + x) + "px";
+        (49 + x) +
+        "px";
+
 
     stick.style.top =
-        (49 + y) + "px";
+        (49 + y) +
+        "px";
+
 
     const robotX =
         Math.round(
-            x / max * 14
+            x /
+            max *
+            14
         );
+
 
     const robotY =
         Math.round(
-            y / max * 9
+            y /
+            max *
+            9
         );
+
 
     previewX =
         robotX * 2;
 
+
     previewY =
         robotY * 2;
 
+
     drawPreview();
+
 
     sendCommand(
         "EYES:" +
@@ -2630,8 +2900,7 @@ stick.addEventListener(
     "pointerdown",
     event => {
 
-        dragging =
-            true;
+        dragging = true;
 
         stick.setPointerCapture(
             event.pointerId
@@ -2664,10 +2933,9 @@ stick.addEventListener(
 
 stick.addEventListener(
     "pointerup",
-    event => {
+    () => {
 
-        dragging =
-            false;
+        dragging = false;
 
         stick.style.left =
             "49px";
@@ -2679,14 +2947,15 @@ stick.addEventListener(
 );
 
 
-// =====================================================
-// AUTOMATIC EYES
-// =====================================================
+/* =========================================================
+   AUTOMATIC LOOKING
+========================================================= */
 
 const autoSwitch =
     document.getElementById(
         "autoSwitch"
     );
+
 
 autoSwitch.addEventListener(
     "click",
@@ -2695,6 +2964,7 @@ autoSwitch.addEventListener(
         autoSwitch.classList.toggle(
             "active"
         );
+
 
         if (
             autoSwitch.classList.contains(
@@ -2706,7 +2976,8 @@ autoSwitch.addEventListener(
                 "EYES:AUTO"
             );
 
-        } else {
+        }
+        else {
 
             sendCommand(
                 "EYES:MANUAL"
@@ -2718,57 +2989,9 @@ autoSwitch.addEventListener(
 );
 
 
-// =====================================================
-// AI TALK BUTTON
-// =====================================================
-
-document
-    .getElementById("talkButton")
-    .addEventListener(
-        "click",
-        () => {
-
-            addAiMessage(
-                "robot",
-                "Voice control will be connected to the robot brain next. For now, type a message below."
-            );
-
-            aiInput.focus();
-
-        }
-    );
-
-
-// =====================================================
-// AI CAMERA BUTTON
-// =====================================================
-
-document
-    .getElementById("cameraButton")
-    .addEventListener(
-        "click",
-        async () => {
-
-            if (!aiMediaStream) {
-
-                await startAIMedia();
-
-                return;
-
-            }
-
-            addAiMessage(
-                "robot",
-                "The camera is already active."
-            );
-
-        }
-    );
-
-
-// =====================================================
-// AI CHAT MESSAGE
-// =====================================================
+/* =========================================================
+   ADD CHAT MESSAGE
+========================================================= */
 
 function addAiMessage(
     type,
@@ -2780,29 +3003,551 @@ function addAiMessage(
             "aiChat"
         );
 
+
     const messageElement =
         document.createElement(
             "div"
         );
 
+
     messageElement.className =
-        "ai-message " + type;
+        "ai-message " +
+        type;
+
 
     messageElement.textContent =
         message;
+
 
     chat.appendChild(
         messageElement
     );
 
+
     chat.scrollTop =
         chat.scrollHeight;
 
-    return messageElement;
+}
+
+
+/* =========================================================
+   OLLAMA AI
+========================================================= */
+
+async function askOllama(
+    message
+) {
+
+    const response =
+        await fetch(
+            OLLAMA_URL,
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    model:
+                        OLLAMA_MODEL,
+
+                    stream: false,
+
+                    messages: [
+
+                        {
+                            role: "system",
+
+                            content:
+                                "You are the AI inside a friendly small robot. Be helpful, friendly and concise. You are running locally on the user's computer. Do not claim to see through the camera unless a vision model is actually connected."
+
+                        },
+
+                        {
+                            role: "user",
+
+                            content:
+                                message
+
+                        }
+
+                    ]
+
+                })
+
+            }
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            await response.text()
+        );
+
+    }
+
+
+    const data =
+        await response.json();
+
+
+    return (
+        data.message &&
+        data.message.content
+    ) ||
+    data.response ||
+    "I couldn't think of a response.";
 
 }
+
+
+/* =========================================================
+   SPEAK RESPONSE
+========================================================= */
+
+function speakRobot(
+    text
+) {
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+
+        return;
+
+    }
+
+
+    window.speechSynthesis.cancel();
+
+
+    const speech =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+
+    speech.rate =
+        1.0;
+
+
+    speech.pitch =
+        1.0;
+
+
+    speech.volume =
+        1.0;
+
+
+    window.speechSynthesis.speak(
+        speech
+    );
+
+}
+
+
+/* =========================================================
+   SEND TEXT TO AI
+========================================================= */
+
+async function sendAiMessage(
+    message
+) {
+
+    message =
+        message.trim();
+
+
+    if (!message) {
+
+        return;
+
+    }
+
+
+    if (aiThinking) {
+
+        return;
+
+    }
+
+
+    addAiMessage(
+        "user",
+        message
+    );
+
+
+    aiThinking = true;
+
+
+    aiStatus.textContent =
+        "Thinking...";
+
+
+    startAIEyeThinking();
+
+
+    try {
+
+        const answer =
+            await askOllama(
+                message
+            );
+
+
+        addAiMessage(
+            "robot",
+            answer
+        );
+
+
+        speakRobot(
+            answer
+        );
+
+
+        aiStatus.textContent =
+            "AI Ready • Listening for you";
+
+
+    }
+    catch(error) {
+
+        console.error(
+            "Ollama error:",
+            error
+        );
+
+
+        addAiMessage(
+            "robot",
+            "I couldn't connect to my local AI. Make sure Ollama is running."
+        );
+
+
+        aiStatus.textContent =
+            "AI connection error";
+
+    }
+
+
+    stopAIEyeThinking();
+
+
+    aiThinking = false;
+
+}
+
+
+/* =========================================================
+   TEXT SEND BUTTON
+========================================================= */
+
+const aiInput =
+    document.getElementById(
+        "aiInput"
+    );
+
+
+const aiSendButton =
+    document.getElementById(
+        "aiSendButton"
+    );
+
+
+aiSendButton.addEventListener(
+    "click",
+    async () => {
+
+        const message =
+            aiInput.value;
+
+
+        aiInput.value = "";
+
+
+        await sendAiMessage(
+            message
+        );
+
+    }
+);
+
+
+aiInput.addEventListener(
+    "keydown",
+    async event => {
+
+        if (
+            event.key ===
+            "Enter"
+        ) {
+
+            event.preventDefault();
+
+            const message =
+                aiInput.value;
+
+
+            aiInput.value = "";
+
+
+            await sendAiMessage(
+                message
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SPEECH RECOGNITION
+========================================================= */
+
+function setupSpeechRecognition() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+        micStatus.textContent =
+            "🎤 Voice input is not supported in this browser.";
+
+        return;
+
+    }
+
+
+    recognition =
+        new SpeechRecognition();
+
+
+    recognition.continuous =
+        false;
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.lang =
+        "en-GB";
+
+
+    recognition.onstart =
+        () => {
+
+            listening = true;
+
+            micStatus.textContent =
+                "🎤 Listening...";
+
+            aiStatus.textContent =
+                "Listening...";
+
+        };
+
+
+    recognition.onresult =
+        async event => {
+
+            const transcript =
+                event.results[0][0].transcript;
+
+
+            micStatus.textContent =
+                "🎤 Heard: " +
+                transcript;
+
+
+            await sendAiMessage(
+                transcript
+            );
+
+        };
+
+
+    recognition.onerror =
+        event => {
+
+            console.error(
+                "Speech recognition error:",
+                event.error
+            );
+
+
+            listening = false;
+
+
+            micStatus.textContent =
+                "🎤 Microphone ready";
+
+
+            aiStatus.textContent =
+                "AI Ready";
+
+        };
+
+
+    recognition.onend =
+        () => {
+
+            listening = false;
+
+
+            if (!aiThinking) {
+
+                micStatus.textContent =
+                    "🎤 Microphone ready";
+
+            }
+
+        };
+
+}
+
+
+/* =========================================================
+   TALK BUTTON
+========================================================= */
+
+document
+.getElementById("talkButton")
+.addEventListener(
+    "click",
+    () => {
+
+        if (!recognition) {
+
+            setupSpeechRecognition();
+
+        }
+
+
+        if (!recognition) {
+
+            addAiMessage(
+                "robot",
+                "Voice recognition isn't supported here. You can still type to me."
+            );
+
+            return;
+
+        }
+
+
+        if (listening) {
+
+            stopListening();
+
+            return;
+
+        }
+
+
+        try {
+
+            recognition.start();
+
+        }
+        catch(error) {
+
+            console.error(
+                error
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   STOP LISTENING
+========================================================= */
+
+function stopListening() {
+
+    if (
+        recognition &&
+        listening
+    ) {
+
+        try {
+
+            recognition.stop();
+
+        }
+        catch(error) {
+
+            console.error(
+                error
+            );
+
+        }
+
+    }
+
+
+    listening = false;
+
+
+    micStatus.textContent =
+        "🎤 Microphone ready";
+
+}
+
+
+/* =========================================================
+   CAMERA BUTTON
+========================================================= */
+
+document
+.getElementById("cameraButton")
+.addEventListener(
+    "click",
+    async () => {
+
+        if (!aiMediaStream) {
+
+            await startAIMedia();
+
+            return;
+
+        }
+
+
+        if (!faceTrackingRunning) {
+
+            startFaceTracking();
+
+            return;
+
+        }
+
+
+        addAiMessage(
+            "robot",
+            "The camera and face tracking are already active."
+        );
+
+    }
+);
+
 
 </script>
 
 </body>
+
 </html>
