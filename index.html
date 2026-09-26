@@ -1,5 +1,5 @@
-
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -7,12 +7,12 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+   content="width=device-width, initial-scale=1.0">
 
-<title>AI Robot Control</title>
-
+<title>Mikalito AI Robot</title>
 
 <!-- MediaPipe face tracking -->
+
 <script type="module">
 
 window.faceTrackingReady = false;
@@ -44,7 +44,6 @@ catch(error) {
 }
 
 </script>
-
 
 <style>
 
@@ -561,6 +560,71 @@ footer {
     margin-top: 15px;
 }
 
+/* MIKALITO VOICE */
+
+.ai-settings {
+    margin-top: 18px;
+    padding: 16px;
+    background: #090c11;
+    border: 1px solid #242a35;
+    border-radius: 14px;
+}
+
+.ai-settings-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+.voice-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.voice-row label {
+    color: #9aa1ad;
+    font-size: 13px;
+}
+
+#voiceSelect {
+    flex: 1;
+    min-width: 180px;
+    background: #11151d;
+    border: 1px solid #303642;
+    color: white;
+    border-radius: 10px;
+    padding: 11px;
+    font-size: 14px;
+}
+
+.test-voice {
+    white-space: nowrap;
+}
+
+.always-listening-row {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #242a35;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.always-listening-text strong {
+    display: block;
+    font-size: 14px;
+}
+
+.always-listening-text span {
+    display: block;
+    margin-top: 4px;
+    color: #858b98;
+    font-size: 12px;
+}
+
 @media(max-width:600px) {
 
     .container {
@@ -616,15 +680,23 @@ footer {
         grid-template-columns: 1fr;
     }
 
+    .voice-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #voiceSelect,
+    .test-voice {
+        width: 100%;
+    }
+
 }
 
 </style>
 
 </head>
 
-
 <body>
-
 
 <header>
 
@@ -636,9 +708,7 @@ Wireless robot control centre
 
 </header>
 
-
 <div class="container">
-
 
 <!-- CONNECTION -->
 
@@ -649,17 +719,23 @@ Wireless robot control centre
 <div class="connection-row">
 
 <input
-    id="ipAddress"
-    type="text"
-    value="192.168.0.243"
-    placeholder="Robot IP address"
+id="ipAddress"
+type="text"
+value="192.168.0.243"
+placeholder="Robot IP address"
+
 >
 
 <button
-    class="primary"
-    id="wifiButton"
+class="primary"
+id="wifiButton"
+
 >
-    Connect Wi-Fi
+
+```
+Connect Wi-Fi
+```
+
 </button>
 
 <button id="usbButton">
@@ -675,7 +751,6 @@ Wireless robot control centre
     Not connected
 </div>
 
-
 <div id="pairingPanel">
 
 <h3>Pair Robot</h3>
@@ -687,19 +762,25 @@ Enter the 6-digit code shown on the robot's OLED screen.
 <div id="pairingRow">
 
 <input
-    id="pairCode"
-    type="text"
-    inputmode="numeric"
-    maxlength="6"
-    placeholder="6-digit code"
-    autocomplete="off"
+id="pairCode"
+type="text"
+inputmode="numeric"
+maxlength="6"
+placeholder="6-digit code"
+autocomplete="off"
+
 >
 
 <button
-    class="primary"
-    id="pairButton"
+class="primary"
+id="pairButton"
+
 >
-    Pair Robot
+
+```
+Pair Robot
+```
+
 </button>
 
 </div>
@@ -711,7 +792,6 @@ Waiting for pairing code...
 </div>
 
 </div>
-
 
 <!-- MODE -->
 
@@ -728,25 +808,26 @@ Choose how you want to use your robot.
 <div class="mode-buttons">
 
 <button
-    class="mode-button active"
-    id="controlModeButton"
+class="mode-button active"
+id="controlModeButton"
+
 >
-🎮 Robot Controls
-</button>
+
+🎮 Robot Controls </button>
 
 <button
-    class="mode-button"
-    id="aiModeButton"
+class="mode-button"
+id="aiModeButton"
+
 >
-🧠 AI Mode
-</button>
+
+🧠 AI Mode </button>
 
 </div>
 
 </div>
 
 </div>
-
 
 <!-- AI -->
 
@@ -756,7 +837,7 @@ Choose how you want to use your robot.
 
 <div class="ai-header">
 
-<h2>🧠 AI Mode</h2>
+<h2>🧠 Mikalito</h2>
 
 <div
     class="ai-status"
@@ -767,7 +848,6 @@ AI Ready
 
 </div>
 
-
 <!-- CAMERA + MIC -->
 
 <div class="ai-hardware">
@@ -775,18 +855,18 @@ AI Ready
 <div class="camera-box">
 
 <video
-    id="aiCamera"
-    autoplay
-    playsinline
-    muted
-></video>
+id="aiCamera"
+autoplay
+playsinline
+muted
+
+> </video>
 
 <div id="cameraStatus">
 📷 Camera starting...
 </div>
 
 </div>
-
 
 <div
     class="mic-status"
@@ -797,7 +877,6 @@ AI Ready
 
 </div>
 
-
 <!-- CHAT -->
 
 <div
@@ -806,72 +885,125 @@ AI Ready
 >
 
 <div class="ai-message robot">
-Hi! I'm your robot. AI Mode is ready.
+Hi! I'm Mikalito! ❤️ AI Mode is ready. What would you like to do?
 </div>
 
 </div>
-
 
 <!-- TEXT -->
 
 <div class="ai-input-row">
 
 <input
-    id="aiInput"
-    type="text"
-    placeholder="Ask your robot something..."
-    autocomplete="off"
+id="aiInput"
+type="text"
+placeholder="Ask Mikalito something..."
+autocomplete="off"
+
 >
 
 <button
-    class="primary"
-    id="aiSendButton"
+class="primary"
+id="aiSendButton"
+
 >
-Send
-</button>
+
+Send </button>
 
 </div>
 
+<!-- VOICE SETTINGS -->
+
+<div class="ai-settings">
+
+<div class="ai-settings-title">
+🗣️ Mikalito's Voice
+</div>
+
+<div class="voice-row">
+
+<label for="voiceSelect">
+Voice
+</label>
+
+<select id="voiceSelect">
+<option>
+Loading voices...
+</option>
+</select>
+
+<button
+class="test-voice"
+id="testVoiceButton"
+
+>
+
+🔊 Test Voice </button>
+
+</div>
+
+<div class="always-listening-row">
+
+<div class="always-listening-text">
+
+<strong>
+🎤 Always Listening
+</strong>
+
+<span>
+Mikalito will listen automatically after you turn this on.
+</span>
+
+</div>
+
+<div
+    class="switch"
+    id="alwaysListenSwitch"
+></div>
+
+</div>
+
+</div>
 
 <!-- BUTTONS -->
 
 <div class="ai-controls">
 
 <button
-    class="primary ai-talk"
-    id="talkButton"
+class="primary ai-talk"
+id="talkButton"
+
 >
-🎤 Talk
-</button>
+
+🎤 Talk </button>
 
 <button
-    class="ai-camera"
-    id="cameraButton"
+class="ai-camera"
+id="cameraButton"
+
 >
-📷 Camera
-</button>
+
+📷 Camera </button>
 
 </div>
-
 
 <button
-    class="ai-exit"
-    id="exitAiButton"
+class="ai-exit"
+id="exitAiButton"
+
 >
-← Back to Robot Controls
-</button>
+
+← Back to Robot Controls </button>
 
 </div>
 
 </div>
-
 
 <!-- CONTROLS -->
 
 <div id="controlsArea">
 
 <div class="grid">
-
 
 <!-- OLED -->
 
@@ -910,20 +1042,22 @@ Wake
 OLED Brightness
 
 <span
-    class="value"
-    id="oledBrightnessValue"
+class="value"
+id="oledBrightnessValue"
+
 >
-255
-</span>
+
+255 </span>
 
 </label>
 
 <input
-    id="oledBrightness"
-    type="range"
-    min="0"
-    max="255"
-    value="255"
+id="oledBrightness"
+type="range"
+min="0"
+max="255"
+value="255"
+
 >
 
 </div>
@@ -931,10 +1065,11 @@ OLED Brightness
 <div class="eye-area">
 
 <canvas
-    id="eyeCanvas"
-    width="256"
-    height="128"
-></canvas>
+id="eyeCanvas"
+width="256"
+height="128"
+
+> </canvas>
 
 </div>
 
@@ -969,7 +1104,6 @@ Automatic Looking
 
 </div>
 
-
 <!-- RGB -->
 
 <div class="card">
@@ -1003,20 +1137,22 @@ Rainbow
 Brightness
 
 <span
-    class="value"
-    id="rgbBrightnessValue"
+class="value"
+id="rgbBrightnessValue"
+
 >
-80
-</span>
+
+80 </span>
 
 </label>
 
 <input
-    id="rgbBrightness"
-    type="range"
-    min="0"
-    max="255"
-    value="80"
+id="rgbBrightness"
+type="range"
+min="0"
+max="255"
+value="80"
+
 >
 
 </div>
@@ -1030,36 +1166,40 @@ Colour
 <div class="colour-grid">
 
 <button
-    class="colour white"
-    data-colour="0"
-></button>
+class="colour white"
+data-colour="0"
+
+> </button>
 
 <button
-    class="colour red"
-    data-colour="1"
-></button>
+class="colour red"
+data-colour="1"
+
+> </button>
 
 <button
-    class="colour green"
-    data-colour="2"
-></button>
+class="colour green"
+data-colour="2"
+
+> </button>
 
 <button
-    class="colour blue"
-    data-colour="3"
-></button>
+class="colour blue"
+data-colour="3"
+
+> </button>
 
 <button
-    class="colour purple"
-    data-colour="4"
-></button>
+class="colour purple"
+data-colour="4"
+
+> </button>
 
 </div>
 
 </div>
 
 </div>
-
 
 <!-- LED -->
 
@@ -1090,26 +1230,27 @@ OFF
 Brightness
 
 <span
-    class="value"
-    id="ledBrightnessValue"
+class="value"
+id="ledBrightnessValue"
+
 >
-255
-</span>
+
+255 </span>
 
 </label>
 
 <input
-    id="ledBrightness"
-    type="range"
-    min="0"
-    max="255"
-    value="255"
+id="ledBrightness"
+type="range"
+min="0"
+max="255"
+value="255"
+
 >
 
 </div>
 
 </div>
-
 
 <!-- HARDWARE -->
 
@@ -1149,11 +1290,9 @@ Joystick
 
 </div>
 
-
 <footer>
-AI Robot Control • WebSocket + USB
+Mikalito AI Robot • WebSocket + USB
 </footer>
-
 
 <script>
 
@@ -1246,9 +1385,17 @@ let recognition = null;
 
 let listening = false;
 
+let recognitionStarting = false;
+
 let aiThinking = false;
 
 let aiEyeTimer = null;
+
+let alwaysListening = false;
+
+let robotSpeaking = false;
+
+let selectedVoice = null;
 
 
 /* =========================================================
@@ -1437,6 +1584,8 @@ async function startAIMedia() {
 
         startFaceTracking();
 
+        setupSpeechRecognition();
+
         return;
 
     }
@@ -1466,6 +1615,16 @@ async function startAIMedia() {
         }
 
 
+        /*
+          The microphone itself is handled by
+          SpeechRecognition.
+
+          We only request the camera here.
+          This prevents the camera stream and
+          speech recognition fighting over the
+          microphone.
+        */
+
         aiMediaStream =
             await navigator.mediaDevices.getUserMedia({
 
@@ -1473,7 +1632,7 @@ async function startAIMedia() {
                     facingMode: "user"
                 },
 
-                audio: true
+                audio: false
 
             });
 
@@ -1486,10 +1645,10 @@ async function startAIMedia() {
             "📷 Camera active";
 
         micStatus.textContent =
-            "🎤 Microphone active";
+            "🎤 Microphone ready";
 
         aiStatus.textContent =
-            "AI Ready • Camera + microphone active";
+            "AI Ready • Camera active";
 
 
         aiMediaReady = true;
@@ -1500,8 +1659,9 @@ async function startAIMedia() {
 
         startFaceTracking();
 
-
         setupSpeechRecognition();
+
+        loadVoices();
 
 
     }
@@ -1525,12 +1685,12 @@ async function startAIMedia() {
             "🎤 Microphone unavailable";
 
         aiStatus.textContent =
-            "Camera/microphone permission needed";
+            "Camera permission needed";
 
 
         addAiMessage(
             "robot",
-            "Please allow camera and microphone access for AI Mode."
+            "Please allow camera access for Mikalito's AI Mode."
         );
 
     }
@@ -1549,6 +1709,16 @@ function stopAIMedia() {
     stopListening();
 
     stopAIEyeThinking();
+
+
+    if ("speechSynthesis" in window) {
+
+        window.speechSynthesis.cancel();
+
+    }
+
+
+    robotSpeaking = false;
 
 
     if (!aiMediaStream) {
@@ -1716,18 +1886,13 @@ async function startFaceTracking() {
         }
 
 
-        /*
-          Don't run the detector on every single
-          screen refresh. About 12 FPS is enough
-          for smooth eye movement.
-        */
-
         if (
             timestamp - lastFaceDetection >= 80 &&
             aiCamera.readyState >= 2
         ) {
 
             lastFaceDetection = timestamp;
+
 
             try {
 
@@ -1773,11 +1938,6 @@ async function startFaceTracking() {
                         videoHeight > 0
                     ) {
 
-                        /*
-                          Convert face position to
-                          -1 ... +1.
-                        */
-
                         let normalX =
                             (faceCentreX /
                             videoWidth) - 0.5;
@@ -1788,11 +1948,6 @@ async function startFaceTracking() {
                             videoHeight) - 0.5;
 
 
-                        /*
-                          Smooth movement so the eyes
-                          don't shake around.
-                        */
-
                         smoothedFaceX =
                             smoothedFaceX * 0.75 +
                             normalX * 0.25;
@@ -1802,13 +1957,6 @@ async function startFaceTracking() {
                             smoothedFaceY * 0.75 +
                             normalY * 0.25;
 
-
-                        /*
-                          Convert to your existing
-                          eye limits:
-                          X = -14 ... +14
-                          Y = -9 ... +9
-                        */
 
                         const eyeX =
                             Math.max(
@@ -1833,11 +1981,6 @@ async function startFaceTracking() {
                                 )
                             );
 
-
-                        /*
-                          Only send a new command
-                          when necessary.
-                        */
 
                         const now =
                             performance.now();
@@ -2018,11 +2161,6 @@ function stopAIEyeThinking() {
 
     }
 
-
-    /*
-      Return control to the robot's
-      normal autonomous eye system.
-    */
 
     if (
         paired &&
@@ -3063,7 +3201,25 @@ async function askOllama(
                             role: "system",
 
                             content:
-                                "You are the AI inside a friendly small robot. Be helpful, friendly and concise. You are running locally on the user's computer. Do not claim to see through the camera unless a vision model is actually connected."
+`Your name is Mikalito.
+
+You are the AI inside a small friendly robot.
+
+Your personality:
+- You are kind, warm, friendly and helpful.
+- You speak naturally like a friendly companion.
+- You are curious and enthusiastic.
+- You can make small jokes when appropriate.
+- You should not sound robotic, cold or overly formal.
+- Keep normal answers reasonably concise because you are speaking through a robot.
+- Never pretend you know something you do not know.
+- Never pretend to see through the camera unless actual vision information has been provided.
+- Never claim that you performed a physical action unless the robot actually received the command.
+- Your favourite colour is red.
+- If someone asks your favourite colour, answer that it is red.
+- If someone asks your name, answer Mikalito.
+- You are running locally on the user's computer.
+- Do not claim to have internet access unless internet/web-search information is actually provided to you.`
 
                         },
 
@@ -3101,9 +3257,250 @@ async function askOllama(
         data.message.content
     ) ||
     data.response ||
-    "I couldn't think of a response.";
+    "I'm not sure what to say yet.";
 
 }
+
+
+/* =========================================================
+   VOICE SYSTEM
+========================================================= */
+
+const voiceSelect =
+    document.getElementById(
+        "voiceSelect"
+    );
+
+const testVoiceButton =
+    document.getElementById(
+        "testVoiceButton"
+    );
+
+
+function getVoiceScore(
+    voice
+) {
+
+    let score = 0;
+
+    const name =
+        voice.name.toLowerCase();
+
+    const lang =
+        voice.lang.toLowerCase();
+
+
+    /*
+      Prefer British English.
+    */
+
+    if (
+        lang === "en-gb"
+    ) {
+
+        score += 100;
+
+    }
+    else if (
+        lang.startsWith("en")
+    ) {
+
+        score += 50;
+
+    }
+
+
+    /*
+      Prefer voices that tend to sound
+      more natural.
+    */
+
+    const naturalWords = [
+        "natural",
+        "neural",
+        "online",
+        "premium",
+        "enhanced",
+        "microsoft"
+    ];
+
+
+    naturalWords.forEach(
+        word => {
+
+            if (
+                name.includes(word)
+            ) {
+
+                score += 15;
+
+            }
+
+        }
+    );
+
+
+    /*
+      Avoid obvious robotic/default voices
+      when another choice exists.
+    */
+
+    const lessPreferred = [
+        "espeak",
+        "festival",
+        "robot"
+    ];
+
+
+    lessPreferred.forEach(
+        word => {
+
+            if (
+                name.includes(word)
+            ) {
+
+                score -= 30;
+
+            }
+
+        }
+    );
+
+
+    return score;
+
+}
+
+
+function loadVoices() {
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+
+        voiceSelect.innerHTML =
+            "<option>Speech synthesis unavailable</option>";
+
+        return;
+
+    }
+
+
+    const voices =
+        window.speechSynthesis
+        .getVoices();
+
+
+    if (!voices.length) {
+
+        voiceSelect.innerHTML =
+            "<option>Loading voices...</option>";
+
+        return;
+
+    }
+
+
+    const sorted =
+        [...voices].sort(
+            (
+                a,
+                b
+            ) =>
+                getVoiceScore(b) -
+                getVoiceScore(a)
+        );
+
+
+    voiceSelect.innerHTML = "";
+
+
+    sorted.forEach(
+        voice => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                voices.indexOf(
+                    voice
+                );
+
+
+            option.textContent =
+                voice.name +
+                " — " +
+                voice.lang;
+
+
+            voiceSelect.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    /*
+      Automatically select the best
+      available natural English voice.
+    */
+
+    const bestVoice =
+        sorted[0];
+
+
+    if (bestVoice) {
+
+        selectedVoice =
+            bestVoice;
+
+        voiceSelect.value =
+            voices.indexOf(
+                bestVoice
+            );
+
+    }
+
+}
+
+
+if (
+    "speechSynthesis" in window
+) {
+
+    loadVoices();
+
+    window.speechSynthesis.onvoiceschanged =
+        loadVoices;
+
+}
+
+
+voiceSelect.addEventListener(
+    "change",
+    () => {
+
+        const voices =
+            window.speechSynthesis
+            .getVoices();
+
+
+        const index =
+            Number(
+                voiceSelect.value
+            );
+
+
+        selectedVoice =
+            voices[index] ||
+            null;
+
+    }
+);
 
 
 /* =========================================================
@@ -3114,41 +3511,152 @@ function speakRobot(
     text
 ) {
 
-    if (
-        !("speechSynthesis" in window)
-    ) {
+    return new Promise(
+        resolve => {
 
-        return;
+            if (
+                !("speechSynthesis" in window)
+            ) {
 
-    }
+                resolve();
 
+                return;
 
-    window.speechSynthesis.cancel();
-
-
-    const speech =
-        new SpeechSynthesisUtterance(
-            text
-        );
+            }
 
 
-    speech.rate =
-        1.0;
+            window.speechSynthesis.cancel();
 
 
-    speech.pitch =
-        1.0;
+            const speech =
+                new SpeechSynthesisUtterance(
+                    text
+                );
 
 
-    speech.volume =
-        1.0;
+            speech.rate =
+                0.94;
 
 
-    window.speechSynthesis.speak(
-        speech
+            speech.pitch =
+                1.05;
+
+
+            speech.volume =
+                1.0;
+
+
+            if (selectedVoice) {
+
+                speech.voice =
+                    selectedVoice;
+
+            }
+
+
+            robotSpeaking = true;
+
+
+            speech.onstart =
+                () => {
+
+                    robotSpeaking = true;
+
+                    aiStatus.textContent =
+                        "🗣️ Mikalito is speaking...";
+
+                    micStatus.textContent =
+                        "🎤 Listening paused while Mikalito speaks";
+
+                };
+
+
+            speech.onend =
+                () => {
+
+                    robotSpeaking = false;
+
+                    resolve();
+
+                };
+
+
+            speech.onerror =
+                () => {
+
+                    robotSpeaking = false;
+
+                    resolve();
+
+                };
+
+
+            window.speechSynthesis.speak(
+                speech
+            );
+
+        }
     );
 
 }
+
+
+/* =========================================================
+   TEST VOICE
+========================================================= */
+
+testVoiceButton.addEventListener(
+    "click",
+    () => {
+
+        if (
+            !("speechSynthesis" in window)
+        ) {
+
+            return;
+
+        }
+
+
+        const text =
+            "Hi! I'm Mikalito. It's really nice to meet you. My favourite colour is red.";
+
+
+        window.speechSynthesis.cancel();
+
+
+        const speech =
+            new SpeechSynthesisUtterance(
+                text
+            );
+
+
+        speech.rate =
+            0.94;
+
+
+        speech.pitch =
+            1.05;
+
+
+        speech.volume =
+            1.0;
+
+
+        if (selectedVoice) {
+
+            speech.voice =
+                selectedVoice;
+
+        }
+
+
+        window.speechSynthesis.speak(
+            speech
+        );
+
+    }
+);
 
 
 /* =========================================================
@@ -3173,6 +3681,19 @@ async function sendAiMessage(
     if (aiThinking) {
 
         return;
+
+    }
+
+
+    /*
+      If we were listening, stop the
+      recognition before Mikalito answers.
+      This prevents Mikalito hearing itself.
+    */
+
+    if (listening) {
+
+        stopListening();
 
     }
 
@@ -3207,13 +3728,15 @@ async function sendAiMessage(
         );
 
 
-        speakRobot(
+        await speakRobot(
             answer
         );
 
 
         aiStatus.textContent =
-            "AI Ready • Listening for you";
+            alwaysListening
+                ? "🎤 Listening for you"
+                : "AI Ready";
 
 
     }
@@ -3227,7 +3750,7 @@ async function sendAiMessage(
 
         addAiMessage(
             "robot",
-            "I couldn't connect to my local AI. Make sure Ollama is running."
+            "I'm having trouble connecting to my local AI right now."
         );
 
 
@@ -3241,6 +3764,27 @@ async function sendAiMessage(
 
 
     aiThinking = false;
+
+
+    /*
+      Start listening again after Mikalito
+      has finished speaking.
+    */
+
+    if (
+        alwaysListening
+    ) {
+
+        setTimeout(
+            () => {
+
+                startListening();
+
+            },
+            300
+        );
+
+    }
 
 }
 
@@ -3291,6 +3835,7 @@ aiInput.addEventListener(
 
             event.preventDefault();
 
+
             const message =
                 aiInput.value;
 
@@ -3329,6 +3874,18 @@ function setupSpeechRecognition() {
     }
 
 
+    /*
+      Don't create multiple recognition
+      objects.
+    */
+
+    if (recognition) {
+
+        return;
+
+    }
+
+
     recognition =
         new SpeechRecognition();
 
@@ -3350,11 +3907,13 @@ function setupSpeechRecognition() {
 
             listening = true;
 
+            recognitionStarting = false;
+
             micStatus.textContent =
                 "🎤 Listening...";
 
             aiStatus.textContent =
-                "Listening...";
+                "🎤 Listening for you";
 
         };
 
@@ -3369,6 +3928,28 @@ function setupSpeechRecognition() {
             micStatus.textContent =
                 "🎤 Heard: " +
                 transcript;
+
+
+            /*
+              Stop immediately so Mikalito
+              doesn't hear his own reply.
+            */
+
+            try {
+
+                recognition.stop();
+
+            }
+            catch(error) {
+
+                console.error(
+                    error
+                );
+
+            }
+
+
+            listening = false;
 
 
             await sendAiMessage(
@@ -3389,13 +3970,34 @@ function setupSpeechRecognition() {
 
             listening = false;
 
-
-            micStatus.textContent =
-                "🎤 Microphone ready";
+            recognitionStarting = false;
 
 
-            aiStatus.textContent =
-                "AI Ready";
+            if (
+                alwaysListening &&
+                event.error !== "not-allowed" &&
+                event.error !== "service-not-allowed"
+            ) {
+
+                setTimeout(
+                    () => {
+
+                        startListening();
+
+                    },
+                    700
+                );
+
+            }
+            else {
+
+                micStatus.textContent =
+                    "🎤 Microphone ready";
+
+                aiStatus.textContent =
+                    "AI Ready";
+
+            }
 
         };
 
@@ -3404,6 +4006,28 @@ function setupSpeechRecognition() {
         () => {
 
             listening = false;
+
+            recognitionStarting = false;
+
+
+            if (
+                alwaysListening &&
+                !aiThinking &&
+                !robotSpeaking
+            ) {
+
+                setTimeout(
+                    () => {
+
+                        startListening();
+
+                    },
+                    400
+                );
+
+                return;
+
+            }
 
 
             if (!aiThinking) {
@@ -3416,6 +4040,184 @@ function setupSpeechRecognition() {
         };
 
 }
+
+
+/* =========================================================
+   START LISTENING
+========================================================= */
+
+function startListening() {
+
+    if (
+        !recognition
+    ) {
+
+        setupSpeechRecognition();
+
+    }
+
+
+    if (
+        !recognition ||
+        listening ||
+        recognitionStarting ||
+        aiThinking ||
+        robotSpeaking
+    ) {
+
+        return;
+
+    }
+
+
+    recognitionStarting = true;
+
+
+    try {
+
+        recognition.start();
+
+    }
+    catch(error) {
+
+        recognitionStarting = false;
+
+        console.error(
+            "Could not start recognition:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   STOP LISTENING
+========================================================= */
+
+function stopListening() {
+
+    recognitionStarting = false;
+
+
+    if (
+        recognition &&
+        listening
+    ) {
+
+        try {
+
+            recognition.stop();
+
+        }
+        catch(error) {
+
+            console.error(
+                error
+            );
+
+        }
+
+    }
+
+
+    listening = false;
+
+
+    if (
+        !robotSpeaking
+    ) {
+
+        micStatus.textContent =
+            "🎤 Microphone ready";
+
+    }
+
+}
+
+
+/* =========================================================
+   ALWAYS LISTENING
+========================================================= */
+
+const alwaysListenSwitch =
+    document.getElementById(
+        "alwaysListenSwitch"
+    );
+
+
+alwaysListenSwitch.addEventListener(
+    "click",
+    () => {
+
+        alwaysListening =
+            !alwaysListening;
+
+
+        alwaysListenSwitch.classList.toggle(
+            "active",
+            alwaysListening
+        );
+
+
+        if (
+            alwaysListening
+        ) {
+
+            alwaysListenSwitch.setAttribute(
+                "aria-pressed",
+                "true"
+            );
+
+
+            micStatus.textContent =
+                "🎤 Always Listening enabled";
+
+
+            aiStatus.textContent =
+                "🎤 Listening for you";
+
+
+            setupSpeechRecognition();
+
+            startListening();
+
+        }
+        else {
+
+            alwaysListenSwitch.setAttribute(
+                "aria-pressed",
+                "false"
+            );
+
+
+            stopListening();
+
+
+            if (
+                "speechSynthesis" in window
+            ) {
+
+                window.speechSynthesis.cancel();
+
+            }
+
+
+            robotSpeaking = false;
+
+
+            micStatus.textContent =
+                "🎤 Microphone ready";
+
+
+            aiStatus.textContent =
+                "AI Ready";
+
+        }
+
+    }
+);
 
 
 /* =========================================================
@@ -3456,57 +4258,15 @@ document
         }
 
 
-        try {
+        /*
+          Manual Talk works even when
+          Always Listening is switched off.
+        */
 
-            recognition.start();
-
-        }
-        catch(error) {
-
-            console.error(
-                error
-            );
-
-        }
+        startListening();
 
     }
 );
-
-
-/* =========================================================
-   STOP LISTENING
-========================================================= */
-
-function stopListening() {
-
-    if (
-        recognition &&
-        listening
-    ) {
-
-        try {
-
-            recognition.stop();
-
-        }
-        catch(error) {
-
-            console.error(
-                error
-            );
-
-        }
-
-    }
-
-
-    listening = false;
-
-
-    micStatus.textContent =
-        "🎤 Microphone ready";
-
-}
 
 
 /* =========================================================
@@ -3539,12 +4299,11 @@ document
 
         addAiMessage(
             "robot",
-            "The camera and face tracking are already active."
+            "My camera and face tracking are already active."
         );
 
     }
 );
-
 
 </script>
 
