@@ -415,6 +415,61 @@ footer {
     font-size: 13px;
 }
 
+/* =====================================================
+   AI CAMERA + MICROPHONE
+   ===================================================== */
+
+.ai-hardware {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.camera-box {
+    position: relative;
+    background: #090c11;
+    border: 1px solid #242a35;
+    border-radius: 14px;
+    overflow: hidden;
+    min-height: 220px;
+}
+
+#aiCamera {
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    object-fit: cover;
+    display: block;
+    background: #000;
+}
+
+#cameraStatus {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background: rgba(0,0,0,0.75);
+    padding: 8px 11px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.mic-status {
+    background: #090c11;
+    border: 1px solid #242a35;
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #858b98;
+}
+
+/* =====================================================
+   AI CHAT
+   ===================================================== */
+
 .ai-chat {
     flex: 1;
     min-height: 280px;
@@ -515,6 +570,11 @@ footer {
     .ai-camera {
         width: 100%;
     }
+
+    .ai-hardware {
+        grid-template-columns: 1fr;
+    }
+
 }
 
 </style>
@@ -648,19 +708,60 @@ footer {
 
                 <h2>🧠 AI Mode</h2>
 
-                <div class="ai-status">
+                <div
+                    class="ai-status"
+                    id="aiStatus"
+                >
                     AI Ready
                 </div>
 
             </div>
 
-            <div class="ai-chat" id="aiChat">
+
+            <!-- CAMERA + MICROPHONE -->
+
+            <div class="ai-hardware">
+
+                <div class="camera-box">
+
+                    <video
+                        id="aiCamera"
+                        autoplay
+                        playsinline
+                        muted
+                    ></video>
+
+                    <div id="cameraStatus">
+                        📷 Camera starting...
+                    </div>
+
+                </div>
+
+                <div
+                    class="mic-status"
+                    id="micStatus"
+                >
+                    🎤 Microphone starting...
+                </div>
+
+            </div>
+
+
+            <!-- CHAT -->
+
+            <div
+                class="ai-chat"
+                id="aiChat"
+            >
 
                 <div class="ai-message robot">
                     Hi! I'm your robot. AI Mode is ready.
                 </div>
 
             </div>
+
+
+            <!-- AI CONTROLS -->
 
             <div class="ai-controls">
 
@@ -679,6 +780,7 @@ footer {
                 </button>
 
             </div>
+
 
             <button
                 class="ai-exit"
@@ -1013,6 +1115,25 @@ const pairStatus =
 
 
 // =====================================================
+// AI MEDIA
+// =====================================================
+
+let aiMediaStream = null;
+
+const aiCamera =
+    document.getElementById("aiCamera");
+
+const cameraStatus =
+    document.getElementById("cameraStatus");
+
+const micStatus =
+    document.getElementById("micStatus");
+
+const aiStatus =
+    document.getElementById("aiStatus");
+
+
+// =====================================================
 // STATUS
 // =====================================================
 
@@ -1036,6 +1157,8 @@ function setStatus(
 // =====================================================
 
 function showPairing() {
+
+    stopAIMedia();
 
     paired = false;
 
@@ -1145,6 +1268,8 @@ const exitAiButton =
 
 function showControlMode() {
 
+    stopAIMedia();
+
     controlsArea.style.display =
         "block";
 
@@ -1162,7 +1287,7 @@ function showControlMode() {
 }
 
 
-function showAiMode() {
+async function showAiMode() {
 
     if (!paired) {
 
@@ -1187,6 +1312,8 @@ function showAiMode() {
         "active"
     );
 
+    await startAIMedia();
+
 }
 
 
@@ -1206,6 +1333,144 @@ exitAiButton.addEventListener(
     "click",
     showControlMode
 );
+
+
+// =====================================================
+// START CAMERA + MICROPHONE
+// =====================================================
+
+async function startAIMedia() {
+
+    if (aiMediaStream) {
+        return;
+    }
+
+    cameraStatus.textContent =
+        "📷 Requesting camera...";
+
+    micStatus.textContent =
+        "🎤 Requesting microphone...";
+
+    aiStatus.textContent =
+        "Requesting camera + microphone...";
+
+    try {
+
+        if (
+            !navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia
+        ) {
+
+            throw new Error(
+                "Camera and microphone access is not supported by this browser."
+            );
+
+        }
+
+        aiMediaStream =
+            await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: "user"
+                },
+                audio: true
+            });
+
+
+        aiCamera.srcObject =
+            aiMediaStream;
+
+
+        cameraStatus.textContent =
+            "📷 Camera active";
+
+        micStatus.textContent =
+            "🎤 Microphone active";
+
+        aiStatus.textContent =
+            "AI Ready • Camera + microphone active";
+
+
+        console.log(
+            "AI camera and microphone started"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "AI media error:",
+            error
+        );
+
+        aiMediaStream =
+            null;
+
+        cameraStatus.textContent =
+            "📷 Camera unavailable";
+
+        micStatus.textContent =
+            "🎤 Microphone unavailable";
+
+        aiStatus.textContent =
+            "Camera/microphone permission needed";
+
+        addAiMessage(
+            "robot",
+            "Please allow camera and microphone access for AI Mode."
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// STOP CAMERA + MICROPHONE
+// =====================================================
+
+function stopAIMedia() {
+
+    if (!aiMediaStream) {
+
+        cameraStatus.textContent =
+            "📷 Camera stopped";
+
+        micStatus.textContent =
+            "🎤 Microphone stopped";
+
+        return;
+
+    }
+
+
+    aiMediaStream
+        .getTracks()
+        .forEach(
+            track => {
+                track.stop();
+            }
+        );
+
+
+    aiMediaStream =
+        null;
+
+
+    aiCamera.srcObject =
+        null;
+
+
+    cameraStatus.textContent =
+        "📷 Camera stopped";
+
+    micStatus.textContent =
+        "🎤 Microphone stopped";
+
+    aiStatus.textContent =
+        "AI Ready";
+
+}
 
 
 // =====================================================
@@ -1386,6 +1651,8 @@ document
 
             }
 
+            stopAIMedia();
+
             paired =
                 false;
 
@@ -1479,6 +1746,8 @@ document
                         error
                     );
 
+                    stopAIMedia();
+
                     paired =
                         false;
 
@@ -1503,6 +1772,8 @@ document
 
             socket.onclose =
                 () => {
+
+                    stopAIMedia();
 
                     paired =
                         false;
@@ -2074,7 +2345,7 @@ autoSwitch.addEventListener(
 
 
 // =====================================================
-// AI MODE PLACEHOLDERS
+// AI TALK BUTTON
 // =====================================================
 
 document
@@ -2085,27 +2356,43 @@ document
 
             addAiMessage(
                 "robot",
-                "Microphone and AI will be connected in the next step."
+                "The microphone is active. Real-time AI voice will be connected next."
             );
 
         }
     );
 
+
+// =====================================================
+// AI CAMERA BUTTON
+// =====================================================
 
 document
     .getElementById("cameraButton")
     .addEventListener(
         "click",
-        () => {
+        async () => {
+
+            if (!aiMediaStream) {
+
+                await startAIMedia();
+
+                return;
+
+            }
 
             addAiMessage(
                 "robot",
-                "Camera support will be connected in the next step."
+                "The camera is already active."
             );
 
         }
     );
 
+
+// =====================================================
+// AI CHAT MESSAGE
+// =====================================================
 
 function addAiMessage(
     type,
